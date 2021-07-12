@@ -1,3 +1,7 @@
-# kanban-client
+# Kanban Client
 
-kanban-client
+How to setup a live development server:
+```
+npm run vite
+```
+
