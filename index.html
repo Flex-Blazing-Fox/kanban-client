@@ -12,7 +12,10 @@
 </head>
 <body class="font-poppins">
 
-  <div id="app">
+  <div id="app" class="relative">
+
+    <div v-if="error" class="absolute top-10 right-2 text-center text-white bg-red-600 px-5 py-2 rounded-md">Email or password is wrong</div>
+
     <div class="grid grid-cols-5 grid-rows-layout gap-4 h-screen">
 
       <!-- SIDEBAR LOG IN -->
@@ -31,30 +34,30 @@
 
       <!-- LOGIN FORM -->
       <div v-if="isRegistered && !isLoggedIn" id="login-page" class="row-start-2 col-start-3 col-span-2 px-20" >
-        <form id="login-form" class="rounded-lg bg-white px-7 py-10 text-teal-900">
+        <form @submit.prevent.trim="signIn" id="login-form" class="rounded-lg bg-white px-7 py-10 text-teal-900">
           <p class="font-bold mb-8 text-2xl text-teal-900">
             Log In to .blazing
           </p>
 
           <label for="login-email" class="font-bold text-teal-900">E-Mail</label>
           <div class="relative w-full mb-3 mt-2">
-            <input id="login-email" type="email" class="rounded-md w-full p-2 pr-8 border-2 border-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-800 focus:border-transparent" />
+            <input v-model="emailLogin" type="email" class="rounded-md w-full p-2 pr-8 border-2 border-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-800 focus:border-transparent" />
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-teal-900 absolute bottom-3 right-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
             </svg>
           </div>
 
-          <label for="login-password" class="font-bold text-teal-900/80">Password</label>
+          <label for="login-password" class="font-bold text-teal-900">Password</label>
           <div class="relative w-full mt-2">
-            <input id="login-password" type="password" class="rounded-md w-full p-2 pr-8 border-2 border-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-800 focus:border-transparent" />
+            <input v-model="passwordLogin" type="password" class="rounded-md w-full p-2 pr-8 border-2 border-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-800 focus:border-transparent" />
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-teal-900/80 absolute bottom-3 right-3" viewBox="0 0 20 20" fill="currentColor" >
               <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
             </svg>
           </div>
 
-          <div class="opacity-80">Forgot your password?</div>
+          <div class="opacity-80 cursor-pointer">Forgot your password?</div>
 
-          <button id="login-btn" class="uppercase tracking-wider bg-teal-900 text-white w-full rounded-md py-3 mt-8 hover:bg-teal-700 active:bg-teal-800">
+          <button class="uppercase tracking-wider bg-teal-900 text-white w-full rounded-md py-3 mt-8 hover:bg-teal-700 active:bg-teal-800">
             Sign In
           </button>
 
@@ -174,7 +177,7 @@
           <span>Tasks</span>
         </div>
   
-        <div class="flex flex-row items-center text-gray-400 gap-4 hover:text-gray-800 cursor-pointer">
+        <div @click="logout" class="flex flex-row items-center text-gray-400 gap-4 hover:text-gray-800 cursor-pointer">
           <div class="w-7">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -296,6 +299,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <script src="index.js"></script>
 </body>
