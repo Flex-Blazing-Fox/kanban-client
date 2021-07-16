@@ -14,15 +14,17 @@
 
   <div id="app" class="relative">
 
-    <div v-if="error" class="absolute top-10 right-2 text-center text-white bg-red-600 px-5 py-2 rounded-md">Email or password is wrong</div>
+    <transition appear name="slide-fade">
+      <div v-if="error" class="absolute top-10 right-2 text-center text-white bg-red-600 px-5 py-2 rounded-md">{{ errorMessage }}</div>
+    </transition>
 
-    <div class="grid grid-cols-5 grid-rows-layout gap-4 h-screen">
+    <div @click="isAddCategory = false" class="grid grid-cols-5 grid-rows-layout gap-4 h-screen">
 
       <!-- SIDEBAR LOG IN -->
       <div v-if="!isLoggedIn && isRegistered" class="row-span-3 col-span-1 flex flex-col justify-between border-r-2 border-gray-100 pl-14 pt-10 pb-24">
         <h1 class="text-lg font-bold tracking-wide text-gray-700"><span class="text-2xl">.</span>blazing</h1>
   
-        <div class="flex flex-row items-center text-gray-400 gap-4 hover:text-gray-800 cursor-pointer">
+        <div @click="register" class="flex flex-row items-center text-gray-400 gap-4 hover:text-gray-800 cursor-pointer">
           <div class="w-7">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
@@ -33,8 +35,8 @@
       </div>
 
       <!-- LOGIN FORM -->
-      <div v-if="isRegistered && !isLoggedIn" id="login-page" class="row-start-2 col-start-3 col-span-2 px-20" >
-        <form @submit.prevent.trim="signIn" id="login-form" class="rounded-lg bg-white px-7 py-10 text-teal-900">
+      <div v-if="!isForgotPassword && isRegistered && !isLoggedIn" id="login-page" class="row-start-2 col-start-3 col-span-2 px-20" >
+        <form @submit.prevent="signIn" id="login-form" class="rounded-lg bg-white px-7 py-10 text-teal-900">
           <p class="font-bold mb-8 text-2xl text-teal-900">
             Log In to .blazing
           </p>
@@ -55,7 +57,7 @@
             </svg>
           </div>
 
-          <div class="opacity-80 cursor-pointer">Forgot your password?</div>
+          <div @click="forgotPassword" class="opacity-80 cursor-pointer">Forgot your password?</div>
 
           <button class="uppercase tracking-wider bg-teal-900 text-white w-full rounded-md py-3 mt-8 hover:bg-teal-700 active:bg-teal-800">
             Sign In
@@ -71,9 +73,9 @@
 
       <!-- FORGOT PASSWORD FORM -->
       <div v-if="isForgotPassword && !isLoggedIn" id="login-page" class="row-start-2 col-start-3 col-span-2 px-20">
-        <form id="login-form" class="rounded-lg bg-white px-7 py-10 text-teal-900">
+        <form @submit.prevent="changePassword" id="login-form" class="rounded-lg bg-white px-7 py-10 text-teal-900">
           <div class="flex flex-row gap-2 mb-8 items-center">
-            <div class="cursor-pointer">
+            <div @click="login" class="cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414 6.414a2 2 0 001.414.586H19a2 2 0 002-2V7a2 2 0 00-2-2h-8.172a2 2 0 00-1.414.586L3 12z" />
               </svg>
@@ -86,15 +88,15 @@
   
           <label for="login-email" class="font-bold text-teal-900">E-Mail</label>
           <div class="relative w-full mb-3 mt-2">
-            <input id="login-email" type="email" class="rounded-md w-full p-2 pr-8 border-2 border-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-800 focus:border-transparent" />
+            <input v-model="emailLoginF" id="login-email" type="email" class="rounded-md w-full p-2 pr-8 border-2 border-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-800 focus:border-transparent" />
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-teal-900 absolute bottom-3 right-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
             </svg>
           </div>
   
-          <label for="login-password" class="font-bold text-teal-900/80">Password</label>
+          <label for="login-password" class="font-bold text-teal-900">Password</label>
           <div class="relative w-full mt-2">
-            <input id="login-password" type="password" class="rounded-md w-full p-2 pr-8 border-2 border-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-800 focus:border-transparent" />
+            <input v-model="passwordLoginF" id="login-password" type="password" class="rounded-md w-full p-2 pr-8 border-2 border-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-800 focus:border-transparent" />
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-teal-900/80 absolute bottom-3 right-3" viewBox="0 0 20 20" fill="currentColor" >
               <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
             </svg>
@@ -112,7 +114,7 @@
       <div v-if="!isRegistered && !isForgotPassword" class="row-span-3 col-span-1 flex flex-col justify-between border-r-2 border-gray-100 pl-14 pt-10 pb-24">
         <h1 class="text-lg font-bold tracking-wide text-gray-700"><span class="text-2xl">.</span>blazing</h1>
 
-        <div class="flex flex-row items-center text-gray-400 hover:text-gray-800 gap-4 cursor-pointer py-1">
+        <div @click="login" class="flex flex-row items-center text-gray-400 hover:text-gray-800 gap-4 cursor-pointer py-1">
           <div class="w-7">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
@@ -145,7 +147,7 @@
           <label for="register-email" class="font-bold text-gray-600">E-Mail</label>
           <div class="relative w-full mb-3 mt-2">
             <input id="register-email" type="email" class="rounded-md p-2 pr-8 border-2 w-full border-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent" />
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute bottom-3 right-3 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute bottom-3 right-3 text-teal-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
             </svg>
           </div>
@@ -153,7 +155,7 @@
           <label for="register-password" class="font-bold text-gray-600">Password</label>
           <div class="relative w-full mt-2">
             <input id="register-password" type="password" class="rounded-md p-2 pr-8 border-2 w-full border-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent" />
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute bottom-3 right-3 text-teal-400" viewBox="0 0 20 20" fill="currentColor" >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute bottom-3 right-3 text-teal-700" viewBox="0 0 20 20" fill="currentColor" >
               <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
             </svg>
           </div>
@@ -190,12 +192,12 @@
       <!-- PROFILE -->
       <div v-if="isLoggedIn" class="row-span-1 col-span-4 flex flex-row justify-end items-end pr-14 pb-2 gap-7 cursor-pointer">
         <div class="pb-2 flex flex-row items-center gap-2">
-          <span>Ari Juanda</span>
+          <span>{{ capitalize }}</span>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </div>
-        <img src="https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=Ari" alt="avatar" class="rounded-full w-10" />
+        <img :src="avatarLink" alt="avatar" class="rounded-full w-10" />
       </div>
   
       <!-- TASKS BAR -->
@@ -210,17 +212,18 @@
       </div>
   
       <!-- MAIN CONTENT : KANBAN -->
-      <div v-if="isLoggedIn" class="row-span-1 col-span-4 flex flex-row justify-between pr-14 pl-3 gap-3 overflow-x-auto h-[510px]">
-        <div class="bg-teal-700/5 w-[280px] rounded-2xl overflow-auto flex-shrink-0 flex-grow-0">
+      <div v-if="isLoggedIn" class="row-span-1 col-span-4 flex flex-row justify-start pr-14 pl-3 gap-3 overflow-x-auto h-[510px]">
+
+        <div v-for="category in categories" class="bg-teal-700/5 w-[280px] rounded-2xl overflow-auto flex-shrink-0 flex-grow-0">
           <div class="flex flex-row justify-between p-4">
-            <div>Backlog</div>
-            <div class="bg-teal-700/5 rounded-lg px-2 text-teal-600/60">2</div>
+            <div>{{ category.name }}</div>
+            <div class="bg-teal-700/5 rounded-lg px-2 text-teal-600/60">{{ category.Tasks.length }}</div>
           </div>
   
           <!-- Task Card -->
-          <div class="bg-white mx-4 text-sm rounded-xl p-3 mb-3 cursor-pointer">
+          <div v-for="task in category.Tasks" class="bg-white mx-4 text-sm rounded-xl p-3 mb-3 cursor-pointer">
             <div class="flex flex-row flex-wrap justify-between items-center mb-5">
-              <span class="inline-block">Add login feature</span>
+              <span class="inline-block">{{ task.title }}</span>
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
@@ -228,68 +231,20 @@
               </div>
             </div>
             <div class="">
-              <img src="https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=Ari" alt="avatar" class="rounded-full w-7 inline-block" />
-              <img src="https://ui-avatars.com/api/?background=B5EAEA&color=fff&name=Deane" alt="avatar" class="rounded-full w-7 inline-block" />
+              <img :src="avatarLink" alt="avatar" class="rounded-full w-7 inline-block" />
             </div>
-          </div>
-  
-          <div class="bg-white mx-4 text-sm rounded-xl p-3 mb-3 cursor-pointer">
-            <div class="flex flex-row flex-wrap justify-between items-center mb-5">
-              <span class="inline-block">Add register feature</span>
-              <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
-                </svg>
-              </div>
-            </div>
-            <div class="">
-              <img src="https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=Ari" alt="avatar" class="rounded-full w-7 inline-block" />
-              <img src="https://ui-avatars.com/api/?background=B5EAEA&color=fff&name=Deane" alt="avatar" class="rounded-full w-7 inline-block" />
-            </div>
-          </div>
-        </div>
-  
-        <div class="bg-teal-700/5 w-[280px] rounded-2xl overflow-auto flex-shrink-0 flex-grow-0">
-          <div class="flex flex-row justify-between p-4">
-            <div>To do</div>
-            <div class="bg-teal-700/5 rounded-lg px-2 text-teal-600/60">1</div>
-          </div>
-  
-          <div class="bg-white mx-4 text-sm rounded-xl p-3 mb-3 cursor-pointer">
-            <div class="flex flex-row flex-wrap justify-between items-center mb-5">
-              <span class="inline-block">Add authentication</span>
-              <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
-                </svg>
-              </div>
-            </div>
-            <div class="">
-              <img src="https://ui-avatars.com/api/?background=B5EAEA&color=fff&name=Deane" alt="avatar" class="rounded-full w-7 inline-block" />
-            </div>
-          </div>
-        </div>
-  
-        <div class="bg-teal-700/5 w-[280px] rounded-2xl overflow-auto flex-shrink-0 flex-grow-0">
-          <div class="flex flex-row justify-between p-4">
-            <div>In progress</div>
-            <div class="bg-teal-700/5 rounded-lg px-2 text-teal-600/60">0</div>
-          </div>
-        </div>
-  
-        <div class="bg-teal-700/5 w-[280px] rounded-2xl overflow-auto flex-shrink-0 flex-grow-0">
-          <div class="flex flex-row justify-between p-4">
-            <div>Done</div>
-            <div class="bg-teal-700/5 rounded-lg px-2 text-teal-600/60">0</div>
           </div>
         </div>
         
-        <div class="bg-teal-700/5 w-[280px] rounded-2xl overflow-auto flex-shrink-0 flex-grow-0 h-[58px] cursor-pointer">
-          <div class="flex flex-row justify-center p-4 text-teal-700">
+        <div @click.stop="addCategory" tabindex="0" class="bg-teal-700/5 w-[280px] rounded-2xl overflow-auto flex-shrink-0 flex-grow-0 h-[58px] cursor-pointer">
+          <div v-if="!isAddCategory" class="flex flex-row justify-center p-4 text-teal-700">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
+          <form v-if="isAddCategory" class="overflow-hidden pt-2 px-2">
+            <input ref="category" v-model="addCategoryInput" type="text" class="bg-teal-700/5 border border-transparent focus:ring-0 focus:border-transparent focus:outline-none w-full h-full rounded-lg" />
+          </form>
         </div>
   
       </div>
@@ -300,7 +255,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
   <script src="index.js"></script>
 </body>
 </html>
