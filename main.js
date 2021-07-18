@@ -1,3 +1,5 @@
+let socket = new WebSocket("ws://kanban-server-staging.herokuapp.com");
+
 const app = new Vue({
   el: "#app",
   data: {
@@ -21,10 +23,13 @@ const app = new Vue({
     },
   },
   methods: {
+    sendMessageUpdate() {
+      socket.send("update");
+    },
     submitLogin() {
       axios({
         method: "POST",
-        url: "http://localhost:3000/user/login",
+        url: "https://kanban-server-staging.herokuapp.com/user/login",
         headers: {
           "Content-Type": "application/json",
         },
@@ -46,7 +51,7 @@ const app = new Vue({
     submitRegister() {
       axios({
         method: "POST",
-        url: "http://localhost:3000/user/register",
+        url: "https://kanban-server-staging.herokuapp.com/user/register",
         headers: {
           "Content-Type": "application/json",
         },
@@ -78,7 +83,7 @@ const app = new Vue({
       if (this.isLogin) {
         axios({
           method: "GET",
-          url: "http://localhost:3000/task",
+          url: "https://kanban-server-staging.herokuapp.com/task",
           headers: {
             "Content-Type": "application/json",
             access_token: localStorage.access_token,
@@ -92,10 +97,33 @@ const app = new Vue({
           });
       }
     },
+    spawnNewSocket() {
+      socket = new WebSocket("ws://kanban-server-staging.herokuapp.com");
+    },
+    checkSocket() {
+      socket.addEventListener("open", function (event) {
+        console.log("connected to server");
+      });
+      socket.addEventListener("message", function (event) {
+        if (event.data === "update") {
+          app.getTasks();
+        }
+      });
+      socket.addEventListener("close", function (event) {
+        socket = null;
+        app.spawnNewSocket();
+      });
+    },
+    sendReqRegularly() {
+      if (this.isLogin) {
+        this.getTasks();
+        setTimeout(this.sendReqRegularly, 40000);
+      }
+    },
     submitTask() {
       axios({
         method: "POST",
-        url: "http://localhost:3000/task",
+        url: "https://kanban-server-staging.herokuapp.com/task",
         headers: {
           "Content-Type": "application/json",
           access_token: localStorage.access_token,
@@ -105,6 +133,7 @@ const app = new Vue({
         .then(({ data }) => {
           this.errorMessage = "";
           this.isAddingTask = false;
+          this.sendMessageUpdate();
           this.getTasks();
         })
         .catch((err) => {
@@ -123,7 +152,7 @@ const app = new Vue({
     submitEditTask(id) {
       axios({
         method: "PUT",
-        url: `http://localhost:3000/task/${id}`,
+        url: `https://kanban-server-staging.herokuapp.com/task/${id}`,
         headers: {
           "Content-Type": "application/json",
           access_token: localStorage.access_token,
@@ -133,6 +162,7 @@ const app = new Vue({
         .then(({ data }) => {
           this.errorMessage = "";
           this.isEditingTask = false;
+          this.sendMessageUpdate();
           this.getTasks();
         })
         .catch((err) => {
@@ -142,7 +172,7 @@ const app = new Vue({
     deleteTask(id) {
       axios({
         method: "DELETE",
-        url: `http://localhost:3000/task/${id}`,
+        url: `https://kanban-server-staging.herokuapp.com/task/${id}`,
         headers: {
           "Content-Type": "application/json",
           access_token: localStorage.access_token,
@@ -150,6 +180,7 @@ const app = new Vue({
       })
         .then(() => {
           this.errorMessage = "";
+          this.sendMessageUpdate();
           this.getTasks();
         })
         .catch((err) => {
@@ -165,13 +196,19 @@ const app = new Vue({
     showAddForm() {
       if (!this.isAddingTask) {
         this.errorMessage = "";
+        this.task.id = "";
+        this.task.title = "";
+        this.task.description = "";
+        this.task.priority = "";
+        this.task.category = "";
+        this.task.due_date = "";
       }
       this.isAddingTask = true;
     },
     showEditForm(id) {
       axios({
         method: "GET",
-        url: `http://localhost:3000/task/${id}`,
+        url: `https://kanban-server-staging.herokuapp.com/task/${id}`,
         headers: {
           "Content-Type": "application/json",
           access_token: localStorage.access_token,
@@ -388,5 +425,7 @@ const app = new Vue({
   },
   mounted() {
     this.getTasks();
+    this.checkSocket();
+    this.sendReqRegularly();
   },
 });
