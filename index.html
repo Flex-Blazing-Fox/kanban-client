@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/d3990b981a.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <!-- navbar -->
+    <div id="navbar">
+        <nav class="navbar navbar-expand-xl">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <button type="button" class="btn btn-primary">Home</button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="btn btn-primary">Add</button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="btn btn-primary">Logout</button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <!-- navbar -->
+    <!-- register -->
+        <div id="register" class="container">
+            <div class="alert alert-warning text-center my-4">
+            </div>
+          <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-8 col-xl-6">
+              <div class="row">
+                <div class="col text-center">
+                  <h2>Register</h2>
+                </div>
+              </div>
+              <div class="row align-items-center mt-4">
+                <div class="col">
+                  <input type="email" class="form-control" placeholder="Email">
+                </div>
+              </div>
+              <div class="row align-items-center mt-4">
+                <div class="col">
+                  <input type="password" class="form-control" placeholder="Password">
+                </div>
+              </div>
+              <div class="row justify-content-start mt-4">
+                <div class="col">
+                  <button class="btn btn-primary mt-4">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    <!-- register -->
+    <!-- login -->
+        <div id="login" class="container">
+          
+          <div class="alert alert-warning text-center my-4">
+          </div>
+          
+          <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-8 col-xl-6">
+              <div class="row">
+                <div class="col text-center">
+                  <h2>Login</h2>
+                </div>
+              </div>
+              <div class="row align-items-center mt-4">
+                <div class="col">
+                  <input type="email" class="form-control" placeholder="Email">
+                </div>
+              </div>
+              <div class="row align-items-center mt-4">
+                <div class="col">
+                  <input type="password" class="form-control" placeholder="Password">
+                </div>
+              </div>
+              <div class="row justify-content-start mt-4">
+                <div class="col">
+                  <button class="btn btn-primary mt-4">Login</button>
+                  <button class="btn btn-primary mt-4">Register</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    <!-- login -->
+    <!-- board -->
+    <div class="boards-container">
+        <div class="boards-container__board">
+          <h1>Back Log</h1>
+          
+          <div class="boards-container__board__card">Card #1
+            <button >Delete <i class='fas fa-archive'></i></button>
+            <button >Edit <i class='fas fa-edit'></i></button>
+          </div>
+        </div>
+        <div class="boards-container__board">
+          <h1>Todo</h1>
+          
+          <div class="boards-container__board__card">Card #1
+            <button >Delete <i class='fas fa-archive'></i></button>
+            <button >Edit <i class='fas fa-edit'></i></button>
+          </div>
+        </div>
+        <div class="boards-container__board">
+          <h1>Doing</h1>
+          
+          <div class="boards-container__board__card">Card #1
+            <button >Delete <i class='fas fa-archive'></i></button>
+            <button>Edit <i class='fas fa-edit'></i></button>
+          </div>
+        </div>
+         <div class="boards-container__board">
+          <h1>Done</h1>
+          
+          <div class="boards-container__board__card">Card #1
+            <button >Delete <i class='fas fa-archive'></i></button>
+            <button >Edit <i class='fas fa-edit'></i></button>
+          </div>
+        </div>
+      </div>
+    <!-- board -->
+    <!-- footer -->
+    <div class="footer">
+        <p>@ Kanban Board</p>
+    </div>
+    <!-- footer -->
+
+</body>
+</html>
