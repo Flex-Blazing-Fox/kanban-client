@@ -624,6 +624,7 @@ export default {
         .then(({ data }) => {
           localStorage.access_token = data.access_token;
           this.isLogin = true;
+          this.errorMessage = "";
           this.getTasks();
         })
         .catch((err) => {
