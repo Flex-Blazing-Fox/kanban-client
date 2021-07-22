@@ -568,10 +568,10 @@
 <script>
 import Category from "./Category.vue";
 import GoogleLogin from "vue-google-login";
-// axios.defaults.baseURL = "https://kanban-server-staging.herokuapp.com";
-axios.defaults.baseURL = "http://localhost:3000";
-// let socket = new WebSocket("ws://kanban-server-staging.herokuapp.com");
-let socket = new WebSocket("ws://localhost:3000");
+axios.defaults.baseURL = "https://kanban-server-staging.herokuapp.com";
+// axios.defaults.baseURL = "http://localhost:3000";
+let socket = new WebSocket("ws://kanban-server-staging.herokuapp.com");
+// let socket = new WebSocket("ws://localhost:3000");
 export default {
   name: "App",
   components: { Category, GoogleLogin },
