@@ -41,58 +41,31 @@
             </form>
         </div>
         
-        <!--TASK LIST-->
+        <!--TASK LIST  -->
         <div class="tasks" v-if="form.login">
-            <div v-for="(category, index) in categories" :key="index+1" class="card"> <!--col-3-->
-                <div class="card-header">
-                    <i class="fa fa-tasks"></i>&nbsp;{{category}}
-                </div> 
-
-                <div class="scroll-area-sm">
-                    <div style="position: static" class="ps-content">
-                        <ul class="list-group">
-                            <li v-for="task in tasks" :v-if="task.category===category" :key="task.id" class="list-group-item">
-                                <div class="widget-content">
-                                    <div class="widget-content-wrapper">
-                                        <div class="widget-content-left">
-                                            <div class="widget-heading">
-                                                <p v-if="form.edit.id !== task.id">{{task.title}}</p>
-                                                <form v-if="form.edit.id === task.id" @submit.prevent="submitEdit(task.id)">
-                                                    <input  name="task" type="text" v-model="form.edit.title">
-                                                    <button>Save</button> 
-                                                </form>
-                                            </div>
-                                        </div>
-                                        <div class="widget-content-right">
-                                            <button v-if="form.edit.id !== task.id" class="border-0 btn-transition btn-outline-success btn" @click="editTask(task)">
-                                                <i class="fa fa-edit"></i>
-                                            </button>
-                    
-                                            <button v-if="form.edit.id !== task.id" class="border-0 btn-transition btn-outline-danger btn" @click="deleteTask(task.id)">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            <Category 
+            v-for="(category, index) in categories" 
+            :key="index+1"  
+            :category="category" 
+            :tasks="tasks"
+            @submitEdit="submitEdit"
+            @deleteTask="deleteTask"></Category>
         </div>
     </div>
 </template>
 
 <script>
 import Axios from 'Axios'
+import Toastify from 'toastify'
+import Category from './component/Category.vue'
 
 Axios.defaults.baseURL = 'http://localhost:3000'
 export default {
     name: 'App',
+    components: {Category},
     data(){
-        return{
-option: {
+     return{
+        option: {
             text: '',
             duration: 3000,
             close: true,
@@ -103,11 +76,6 @@ option: {
         form: {
             login: localStorage.access_token ? true : false,
             register: false,
-            edit: {
-            id: '',
-            title: '',
-            category: ''
-            }
         },
         user: {
             email: '',
@@ -130,11 +98,6 @@ option: {
             localStorage.removeItem('access_token')
             this.form.login = false
         },
-        editTask(task){
-            this.form.edit.id = task.id
-            this.form.edit.title = task.title
-            this.form.edit.category = task.category
-        },
         //Axios
         login(){
             Axios({
@@ -151,9 +114,9 @@ option: {
                 this.form.login = true
             })
             .catch(err=>{
-                option.text = err.response.data.message
-                option.backgroundColor = 'red'
-                Toastify(option).showToast()
+                this.option.text = err.response.data.message
+                this.option.backgroundColor = 'red'
+                Toastify(this.option).showToast()
             })
             .finally(()=>{
                 this.user.email = ''
@@ -173,9 +136,9 @@ option: {
                 this.form.register = false
             })
             .catch(err=>{
-                option.text = err.response.data.message
-                option.backgroundColor = 'red'
-                Toastify(option).showToast()
+                this.option.text = err.response.data.message
+                this.option.backgroundColor = 'red'
+                Toastify(this.option).showToast()
             })
             .finally(()=>{
                 this.user.email = ''
@@ -195,32 +158,32 @@ option: {
                 this.tasks = result.data
             })
             .catch(err=>{
-                option.text = err.response.data.message
-                option.backgroundColor = 'red'
-                Toastify(option).showToast()
+                this.option.text = err.response.data.message
+                this.option.backgroundColor = 'red'
+                Toastify(this.option).showToast()
             })
         },
-        submitEdit(id){
+        submitEdit(task){
             Axios({
                 method: 'PATCH',
-                url: `/tasks/title/${id}`,
+                url: `/tasks/title/${task.id}`,
                 data: {
-                    title : this.form.edit.title
+                    title : task.title
                 },
                 headers: {
                     access_token: localStorage.access_token
                 }
             })
             .then(result=>{
-                option.text = `Success update ${result.data.title}`
-                option.backgroundColor = 'green'
-                Toastify(option).showToast()
+                // this.option.text = `Success update ${result.data.title}`
+                // this.option.backgroundColor = 'green'
+                // Toastify(this.option).showToast()
                 this.getTasks()
             })
             .catch(err=>{
-                option.text = err.response.data.message
-                option.backgroundColor = 'red'
-                Toastify(option).showToast()
+                this.option.text = err.response.data.message
+                this.option.backgroundColor = 'red'
+                Toastify(this.option).showToast()
             })
             .finally(()=>{
                 this.form.edit = ''
@@ -235,9 +198,9 @@ option: {
                 }
             })
             .then(result=>{
-                option.text = result.data.message
-                option.backgroundColor = 'red'
-                Toastify(option).showToast()
+                // this.option.text = result.data.message
+                // this.option.backgroundColor = 'red'
+                // Toastify(this.option).showToast()
                 this.getTasks()
             })
             .catch(err=>{

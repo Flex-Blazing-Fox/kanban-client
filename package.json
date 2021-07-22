@@ -19,6 +19,7 @@
   "homepage": "https://github.com/ardiansyakh/kanban-client#readme",
   "dependencies": {
     "axios": "^0.21.1",
+    "toastify": "^2.0.1",
     "vue": "^2.6.14",
     "vue-hot-reload-api": "^2.3.4"
   },
