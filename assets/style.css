@@ -6,7 +6,7 @@ body {
     line-height: 1.5;
     color: #495057;
     text-align: left;
-    background-color: #099e9e
+    background-color: #fa8f15
 }
 
 i {
@@ -24,7 +24,6 @@ i {
 .card {
     box-shadow: 0 0.46875rem 2.1875rem rgba(4, 9, 20, 0.03), 0 0.9375rem 1.40625rem rgba(4, 9, 20, 0.03), 0 0.25rem 0.53125rem rgba(4, 9, 20, 0.05), 0 0.125rem 0.1875rem rgba(4, 9, 20, 0.03);
     border-width: 0;
-    margin-right: 10px;
     transition: all .2s;
 }
 
@@ -178,14 +177,14 @@ i {
 .all-form h1{
   font-size: 36px;
   text-align: center;
-  color: #45aba6;
+  color: #f36a34;
   margin-bottom: 30px;
   font-weight: normal;
 }
 .all-form h2{
     font-size: 24px;
     text-align: center;
-    color: #45aba6;
+    color: #f36a34;
     margin-bottom: 30px;
     font-weight: normal;
   }
@@ -273,42 +272,42 @@ i {
     color: #666;
 }
 .all-form .login-btn {
-  background: #45aba6;
+  background: #f36a34;
   padding: 11px 50px;
-  border-color: #45aba6;
+  border-color: #f36a34;
   color: #fff;
   text-align: center;
   margin: 0 auto;
   font-size: 20px;
-  border: 1px solid #45aba6;
+  border: 1px solid #f36a34;
   border-radius: 44px;
   width: 100%;
   height: 56px;
   cursor: pointer;
 }
 .all-form .register-btn {
-    background: #45aba6;
+    background: #f36a34;
     padding: 11px 50px;
-    border-color: #45aba6;
+    border-color: #f36a34;
     color: #fff;
     text-align: center;
     margin: 0 auto;
     font-size: 20px;
-    border: 1px solid #45aba6;
+    border: 1px solid #f36a34;
     border-radius: 44px;
     width: 100%;
     height: 56px;
     cursor: pointer;
 }
 .all-form .add-btn {
-    background: #45aba6;
+    background: #f36a34;
     padding: 11px 50px;
-    border-color: #45aba6;
+    border-color: #f36a34;
     color: #fff;
     text-align: center;
     margin: 0 auto;
     font-size: 20px;
-    border: 1px solid #45aba6;
+    border: 1px solid #f36a34;
     border-radius: 44px;
     width: 100%;
     height: 56px;
@@ -318,7 +317,7 @@ i {
   float: left;
   width: 100%;
   text-decoration: none;
-  color: #45aba6;
+  color: #f36a34;
   font-size: 14px;
   text-align: center;
   margin-top: 11px;
@@ -327,7 +326,7 @@ i {
     float: left;
     width: 100%;
     text-decoration: none;
-    color: #45aba6;
+    color: #f36a34;
     font-size: 14px;
     text-align: center;
     margin-top: 11px;
@@ -337,7 +336,7 @@ i {
     color: white;
     height: 50px;
     width: 50px;
-    background: #45aba6;
+    background: #f36a34;
     border-radius: 60%;
     margin: 0px 10px;
     border: none;
@@ -379,14 +378,14 @@ i {
 .add-form h1{
   font-size: 36px;
   text-align: center;
-  color: #45aba6;
+  color: #f36a34;
   margin-bottom: 30px;
   font-weight: normal;
 }
 .add-form h2{
     font-size: 24px;
     text-align: center;
-    color: #45aba6;
+    color: #f36a34;
     margin-bottom: 30px;
     font-weight: normal;
   }
@@ -466,14 +465,14 @@ i {
     color: #666;
 }
 .add-form .add-btn {
-    background: #45aba6;
+    background: #f36a34;
     padding: 11px 50px;
-    border-color: #45aba6;
+    border-color: #f36a34;
     color: #fff;
     text-align: center;
     margin: 0 auto;
     font-size: 20px;
-    border: 1px solid #45aba6;
+    border: 1px solid #f36a34;
     border-radius: 44px;
     width: 100%;
     height: 56px;

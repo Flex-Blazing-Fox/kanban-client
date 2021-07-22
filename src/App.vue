@@ -42,40 +42,50 @@
         </div>
         
         <!--TASK LIST  -->
-        <div class="tasks" v-if="form.login">
+        <div class="tasks row" v-if="form.login">
             <Category 
             v-for="(category, index) in categories" 
             :key="index+1"  
             :category="category" 
             :tasks="tasks"
+            :edit="form.edit"
+            @editTask="editTask"
             @submitEdit="submitEdit"
-            @deleteTask="deleteTask"></Category>
+            @deleteTask="deleteTask"
+            @addTask="addTask">
+            </Category>
         </div>
     </div>
 </template>
 
 <script>
 import Axios from 'Axios'
-import Toastify from 'toastify'
+import Toastify from 'toastify-js'
 import Category from './component/Category.vue'
 
 Axios.defaults.baseURL = 'http://localhost:3000'
-export default {
-    name: 'App',
-    components: {Category},
-    data(){
-     return{
-        option: {
+const option= {
             text: '',
             duration: 3000,
             close: true,
             gravity: 'top',
             position: 'right',
-            backgroundColor: '', //'linear-gradient(to right, #00b09b, #96c93d)',
-        },
+            backgroundColor: 'red'//'linear-gradient(to right, #00b09b, #96c93d)',
+}
+
+export default {
+    name: 'App',
+    components: {Category},
+    data(){
+     return{
         form: {
             login: localStorage.access_token ? true : false,
             register: false,
+            edit: {
+                id: '',
+                title: '',
+                category: ''
+            }
         },
         user: {
             email: '',
@@ -98,6 +108,11 @@ export default {
             localStorage.removeItem('access_token')
             this.form.login = false
         },
+        editTask(task){
+            this.form.edit.id = task.id
+            this.form.edit.title = task.title
+            this.form.edit.category = task.category
+        },
         //Axios
         login(){
             Axios({
@@ -114,9 +129,10 @@ export default {
                 this.form.login = true
             })
             .catch(err=>{
-                this.option.text = err.response.data.message
-                this.option.backgroundColor = 'red'
-                Toastify(this.option).showToast()
+                console.log(option.backgroundColor);
+                option.text = err.response.data.message
+                option.backgroundColor = 'red'
+                Toastify(option).showToast()
             })
             .finally(()=>{
                 this.user.email = ''
@@ -136,9 +152,9 @@ export default {
                 this.form.register = false
             })
             .catch(err=>{
-                this.option.text = err.response.data.message
-                this.option.backgroundColor = 'red'
-                Toastify(this.option).showToast()
+                option.text = err.response.data.message
+                option.backgroundColor = 'red'
+                Toastify(option).showToast()
             })
             .finally(()=>{
                 this.user.email = ''
@@ -158,10 +174,32 @@ export default {
                 this.tasks = result.data
             })
             .catch(err=>{
-                this.option.text = err.response.data.message
-                this.option.backgroundColor = 'red'
-                Toastify(this.option).showToast()
+                option.text = err.response.data.message
+                option.backgroundColor = 'red'
+                Toastify(option).showToast()
             })
+        },
+        addTask(task){
+            Axios({
+                method: 'POST',
+                url: '/tasks',
+                data: task,
+                headers: {
+                    access_token: localStorage.access_token
+                }
+            })
+            .then(result=>{
+                option.text = `Success add ${result.data.title}`
+                option.backgroundColor = 'green'
+                Toastify(option).showToast()
+                this.getTasks()
+            })
+            .catch(err=>{
+                option.text = err.response.data.message
+                option.backgroundColor = 'red'
+                Toastify(option).showToast()
+            })
+
         },
         submitEdit(task){
             Axios({
@@ -175,18 +213,22 @@ export default {
                 }
             })
             .then(result=>{
-                // this.option.text = `Success update ${result.data.title}`
-                // this.option.backgroundColor = 'green'
-                // Toastify(this.option).showToast()
+                option.text = `Success update ${result.data.title}`
+                option.backgroundColor = 'green'
+                Toastify(option).showToast()
                 this.getTasks()
             })
             .catch(err=>{
-                this.option.text = err.response.data.message
-                this.option.backgroundColor = 'red'
-                Toastify(this.option).showToast()
+                option.text = err.response.data.message
+                option.backgroundColor = 'red'
+                Toastify(option).showToast()
             })
             .finally(()=>{
-                this.form.edit = ''
+                this.form.edit = {
+                    id: '',
+                    title: '',
+                    category: ''
+                }
             })
         },
         deleteTask(id){
@@ -198,9 +240,9 @@ export default {
                 }
             })
             .then(result=>{
-                // this.option.text = result.data.message
-                // this.option.backgroundColor = 'red'
-                // Toastify(this.option).showToast()
+                option.text = result.data.message
+                option.backgroundColor = 'red'
+                Toastify(option).showToast()
                 this.getTasks()
             })
             .catch(err=>{
