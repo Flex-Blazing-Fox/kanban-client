@@ -30,7 +30,8 @@
                         <div class="ui icon header">
                            <h2 class="ui header center aligned">Social Login</h2>
                         </div>
-                        <div :id="my-signin2" data-onsuccess="onSignIn"></div>
+                        <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                        <div :id="my-signin2" data-onsuccess="onSignIn"></div> -->
                     </div>
                 </div>
             </div>
