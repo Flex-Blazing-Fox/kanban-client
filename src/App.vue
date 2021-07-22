@@ -232,6 +232,13 @@
           >Register here</a
         >
       </div>
+      <div class="mt-8 flex items-center">
+        <GoogleLogin
+          :params="params"
+          :renderParams="renderParams"
+          :onSuccess="onSuccessGoogleLogin"
+        ></GoogleLogin>
+      </div>
     </div>
 
     <!-- Task Board -->
@@ -244,10 +251,26 @@
         {{ errorMessage }}
       </div>
       <div class="grid grid-cols-4 gap-2 font-display">
-        <Category :tasks="backlogTasks" @showEditForm="showEditForm" @deleteTask="deleteTask"></Category>
-        <Category :tasks="todoTasks" @showEditForm="showEditForm" @deleteTask="deleteTask"></Category>
-        <Category :tasks="inProgressTasks" @showEditForm="showEditForm" @deleteTask="deleteTask"></Category>
-        <Category :tasks="doneTasks" @showEditForm="showEditForm" @deleteTask="deleteTask"></Category>
+        <Category
+          :tasks="backlogTasks"
+          @showEditForm="showEditForm"
+          @deleteTask="deleteTask"
+        ></Category>
+        <Category
+          :tasks="todoTasks"
+          @showEditForm="showEditForm"
+          @deleteTask="deleteTask"
+        ></Category>
+        <Category
+          :tasks="inProgressTasks"
+          @showEditForm="showEditForm"
+          @deleteTask="deleteTask"
+        ></Category>
+        <Category
+          :tasks="doneTasks"
+          @showEditForm="showEditForm"
+          @deleteTask="deleteTask"
+        ></Category>
       </div>
     </div>
 
@@ -544,14 +567,26 @@
 
 <script>
 import Category from "./Category.vue";
+import GoogleLogin from "vue-google-login";
+// axios.defaults.baseURL = "https://kanban-server-staging.herokuapp.com";
 axios.defaults.baseURL = "http://localhost:3000";
 // let socket = new WebSocket("ws://kanban-server-staging.herokuapp.com");
+let socket = new WebSocket("ws://localhost:3000");
 export default {
   name: "App",
-  components: { Category },
+  components: { Category, GoogleLogin },
   data() {
     return {
       title: "App.vue",
+      params: {
+        client_id:
+          "585170277469-uvcusf135ti8n297a9tt7d7krr90c9a4.apps.googleusercontent.com",
+      },
+      renderParams: {
+        width: 250,
+        height: 50,
+        longtitle: true,
+      },
       categories: ["backlog", "todo", "in progress", "done"],
       isLogin: localStorage.access_token ? true : false,
       isRegistering: false,
@@ -597,6 +632,27 @@ export default {
         .finally(() => {
           this.user.email = "";
           this.user.password = "";
+        });
+    },
+    onSuccessGoogleLogin(googleUser) {
+      let id_token = googleUser.getAuthResponse().id_token;
+      axios({
+        method: "POST",
+        url: "/user/googlelogin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          idToken: id_token,
+        },
+      })
+        .then(({ data }) => {
+          localStorage.access_token = data.access_token;
+          this.isLogin = true;
+          this.getTasks();
+        })
+        .catch((err) => {
+          console.log(err);
         });
     },
     submitRegister() {
@@ -648,29 +704,30 @@ export default {
           });
       }
     },
-    // spawnNewSocket() {
-    //   socket = new WebSocket("ws://kanban-server-staging.herokuapp.com");
-    // },
-    // checkSocket() {
-    //   socket.addEventListener("open", function (event) {
-    //     console.log("connected to server");
-    //   });
-    //   socket.addEventListener("message", function (event) {
-    //     if (event.data === "update") {
-    //       app.getTasks();
-    //     }
-    //   });
-    //   socket.addEventListener("close", function (event) {
-    //     socket = null;
-    //     app.spawnNewSocket();
-    //   });
-    // },
-    // sendReqRegularly() {
-    //   if (this.isLogin) {
-    //     this.getTasks();
-    //     setTimeout(this.sendReqRegularly, 40000);
-    //   }
-    // },
+    spawnNewSocket() {
+      socket = new WebSocket("ws://kanban-server-staging.herokuapp.com");
+    },
+    checkSocket() {
+      let that = this;
+      socket.addEventListener("open", function (event) {
+        console.log("connected to server");
+      });
+      socket.addEventListener("message", function (event) {
+        if (event.data === "update") {
+          that.getTasks();
+        }
+      });
+      socket.addEventListener("close", function (event) {
+        socket = null;
+        that.spawnNewSocket();
+      });
+    },
+    sendReqRegularly() {
+      if (this.isLogin) {
+        this.getTasks();
+        setTimeout(this.sendReqRegularly, 40000);
+      }
+    },
     submitTask() {
       axios({
         method: "POST",
@@ -684,7 +741,7 @@ export default {
         .then(({ data }) => {
           this.errorMessage = "";
           this.isAddingTask = false;
-          // this.sendMessageUpdate();
+          this.sendMessageUpdate();
           this.getTasks();
         })
         .catch((err) => {
@@ -713,7 +770,7 @@ export default {
         .then(({ data }) => {
           this.errorMessage = "";
           this.isEditingTask = false;
-          // this.sendMessageUpdate();
+          this.sendMessageUpdate();
           this.getTasks();
         })
         .catch((err) => {
@@ -731,7 +788,7 @@ export default {
       })
         .then(() => {
           this.errorMessage = "";
-          // this.sendMessageUpdate();
+          this.sendMessageUpdate();
           this.getTasks();
         })
         .catch((err) => {
@@ -958,8 +1015,8 @@ export default {
   },
   created() {
     this.getTasks();
-    // this.checkSocket();
-    // this.sendReqRegularly();
+    this.checkSocket();
+    this.sendReqRegularly();
   },
 };
 </script>
