@@ -30,7 +30,7 @@ import axios from 'axios'
 
 import TaskCard from './TaskCard.vue'
 
-const BASE_URL = 'http://localhost:3009'
+const BASE_URL = 'https://blazing-kanban.herokuapp.com'
 
 export default {
   props: ['categories', 'avatarLink'],

@@ -97,7 +97,7 @@ import ErrorBox from './components/ErrorBox.vue'
 import Sidebar from './components/Sidebar.vue'
 import Taskbar from './components/Taskbar.vue'
 
-const BASE_URL = 'http://localhost:3009'
+const BASE_URL = 'https://blazing-kanban.herokuapp.com'
 
 export default {
   name: 'App',

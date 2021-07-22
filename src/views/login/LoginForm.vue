@@ -70,7 +70,7 @@ export default {
     onSignInGoogle: function(user) {
       const id_token = user.getAuthResponse().id_token
       axios({
-        url: 'http://localhost:3009/users/googleLogin',
+        url: 'https://blazing-kanban.herokuapp.com/users/googleLogin',
         method: 'POST',
         data: { id_token }
       })
