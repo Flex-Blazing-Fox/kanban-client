@@ -5,7 +5,6 @@
                 <div class="board-header">{{ board.name }}</div>
             </div>
             <div class="content ">
-                
                 <draggable :list="taskList[board.name]" ghost-class="gost-card" v-bind="dragOptions" @change="log" group="all-tasks"  :move="onMove"  @start="isDragging=true" @end="isDragging=false">
                     <!-- {{taskList[board.name]}} -->
                     <Card v-for="task in taskList[board.name]" :key="task.id" :taskData="task" class="move" :name="'flip-list'"></Card>
@@ -98,7 +97,6 @@ section{
     
     justify-content:space-evenly;
 }
-
 
 .flip-list-move {
   transition: transform 0.5s;

@@ -2,13 +2,14 @@
     <div class="head">
         <!-- Navbar -->
         <Navbar 
-            @changePages="changeView">
+            @changePages="changeView" @logout="logout" :isLogin="isLogin">
         </Navbar>
         <!-- End Of Navbar -->
         
         <!-- Login Page -->
         <Login 
-            v-if="currentPages === 'login'">
+            v-if="currentPages === 'login'"
+            @loginData="login">
         </Login>
         <!-- End Of Login Page -->
 
@@ -20,7 +21,7 @@
 
         <!-- Dashboad -->
         <Dashboard 
-            v-else-if="currentPages === 'dashboard'"
+            v-else-if="currentPages === 'dashboard'" :isLogin="{isLogin}"
             :tasks="tasks">
         </Dashboard>
         <!-- End Of Dashboard -->
@@ -43,46 +44,72 @@ import Register from "./views/Register.vue"
 import Dashboard from "./views/Dashboard.vue"
 import axios from "axios";
 
-axios.defaults.baseURL;
+axios.defaults.baseURL = "http://localhost:3000";
 
 export default {
     name:'App',
     components:{ Navbar, Login, Register, Dashboard, LandingPage },
     data(){
         return{
-            tasks: [],
             isLogin:false,
             currentPages:"",
+            tasks:[]
         }
     },
     methods:{
-      authCheking(){
-        if(localStorage.access_token){
-          console.log('login berhasil');
-          this.fetchAllTask()
-        }else{
-          console.log(`belum login`);
-        }
-      },
-      changeView(pages){
-          this.currentPages = pages
-      },
-      fetchAllTask(){
-        axios.get('/tasks', {
-          headers:{
-            access_token:localStorage.access_token
-          }
-        })
-        .then(({data}) => {
-          this.tasks = data
-        })
-        .catch(err => {
-          console.log(err.response.data[0].message);
-        })
-      },
+        authCheking(){
+            if(localStorage.access_token){
+                console.log('login berhasil');
+                this.currentPages = 'dashboard'
+                this.isLogin = true;
+                this.fetchAllTask()
+            }else{
+                console.log(`belum login`);
+            }
+        },
+        changeView(pages){
+            this.currentPages = pages
+        },
+        login(loginData){
+            console.log(loginData);
+            axios({
+                method: 'POST',
+                url: '/users/login',
+                data: {
+                    "email" : loginData.email,
+                    "password" :loginData.password
+                }
+            })
+            .then((result)=> {
+                
+                localStorage.setItem("access_token", result.data.access_token)
+                this.authCheking()
+            })
+            .catch((err) => {
+                console.log(err.response.data);
+            })
+        },
+        logout(){
+            localStorage.clear()
+            this.currentPages = ''
+            this.isLogin = false
+        },
+        fetchAllTask(){
+            axios.get('/tasks', {
+                headers:{
+                    access_token:localStorage.access_token
+                }
+            })
+            .then(({data}) => {
+                this.tasks = data
+            })
+            .catch(err => {
+                console.log(err.response.data[0].message);
+            })
+        },
     },
     created: function (){
-      this.authCheking()
+        this.authCheking()
     }
 }
 </script>

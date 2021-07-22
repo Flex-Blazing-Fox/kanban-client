@@ -5,9 +5,12 @@
                 <div class="left item">
                     <h3 @click="changeView()">KANBAN</h3>
                 </div>
-                <div class="right item">
+                <div class="right item" v-if="!isLogin">
                     <a href="#" @click="changeView('login')" class="ui inverted button">Log in</a>
                     <a href="#" @click="changeView('register')" class="ui inverted button">Sign Up</a>
+                </div>
+                <div class="right item" v-else>
+                    <a href="#" @click="logout" class="ui inverted button">Logout</a>
                 </div>
             </div>
         </div>
@@ -17,6 +20,7 @@
 <script>
 export default {
     name:"Navbar",
+    props:['isLogin'],
     data(){
         return {
             
@@ -25,8 +29,11 @@ export default {
     methods:{
         changeView(pages){
             this.$emit('changePages', pages)
+        },
+        logout(){
+            this.$emit("logout")
         }
-    }
+    },
 }
 </script>
 

@@ -8,23 +8,23 @@
                         <div class="ui icon header">
                            <h2 class="ui header center aligned">LOGIN</h2>
                         </div>
-                        <div class="ui form">
+                        <form class="ui form">
                             <div class="ui segment inner">
                                 <div class="field">
                                     <div class="ui left icon input">
                                         <i class="mail icon"></i>
-                                        <input type="text" placeholder="Email">
+                                        <input type="text" v-model="loginData.email" placeholder="Email">
                                     </div>
                                 </div>
                                 <div class="field">
                                     <div class="ui left icon input">
                                         <i class="lock icon"></i>
-                                        <input type="text" placeholder="Password">
+                                        <input type="password" v-model="loginData.password" placeholder="Password">
                                     </div>
                                 </div>
-                                <button class="ui button fluid orange big" color="teal" type="submit">Sign In</button>
+                                <button @click="login" type="submit" class="ui button fluid orange big" color="teal">Sign In</button>
                             </div>
-                        </div>
+                        </form>
                     </div>
                     <div class="column">
                         <div class="ui icon header">
@@ -41,34 +41,20 @@
 </template>
 
 <script>
-import axios from "axios";
 
 export default {
     name:"Login",
     data(){
         return {
-            email:'',
-            password:'',
-            baseUrl: 'http://localhost:3000'
+            loginData:{
+                email:'',
+                password:'',
+            }
         }
     },
     methods:{
         login(){
-            axios({
-                method: 'POST',
-                url: `${this.baseUrl}/users/login`,
-                data: {
-                    "email" : this.email,
-                    "password" : this.password
-                }
-            })
-            .then((result)=> {
-                console.log(result);
-                localStorage.setItem("access_token", result.data.access_token)
-            })
-            .catch((err) => {
-                console.log(err.response.data);
-            })
+            this.$emit('loginData', this.loginData)
         }
     }
 }
