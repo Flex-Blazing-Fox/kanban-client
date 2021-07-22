@@ -412,16 +412,20 @@ export default {
           user_id: this.user_id,
         },
       })
-      .then(taskRes => {
-        this.categories.forEach((category) => {
-          if (category.id === taskRes.data.task.category_id) {
-            category.Tasks.push(taskRes.data.task)
-          }
-        })
-
+      .then(res => {
         this.isCreateTask = false
         this.createTaskCategory = ''
         this.createTaskTitle = ''
+        return axios.get(BASE_URL + '/categories')
+      })
+      .then(categoryRes => {
+        this.categories = categoryRes.data
+        // Filter tasks with certain organization id
+        this.categories.forEach((category) => {
+          category.Tasks = category.Tasks.filter(
+            (task) => task.organization_id === this.organization_id
+          )
+        })
       })
       .catch(err => {
         this.showError('Title or Category must be specified')

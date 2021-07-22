@@ -23,10 +23,11 @@
 import EditTask from './EditTask.vue'
 
 export default {
-  props: ['task', 'name'],
+  props: ['task'],
   data: function() {
     return {
       isEditable: false,
+      name: `${this.task.User.first_name} ${this.task.User.last_name}`
     }
   },
   components: {

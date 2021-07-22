@@ -1,5 +1,5 @@
 <template>
-  <div class="row-span-1 col-span-4 flex flex-row justify-start pr-14 pl-3 gap-3 overflow-x-auto h-[510px]">
+  <div class="row-span-1 col-span-4 flex flex-row justify-start pr-14 pl-3 gap-3 overflow-x-auto h-[600px]">
 
     <div v-for="category in categories" :key="category.id" class="bg-teal-700/5 w-[280px] rounded-2xl overflow-auto flex-shrink-0 flex-grow-0">
       <div class="flex flex-row justify-between p-4">
@@ -13,7 +13,6 @@
           v-for="task in category.Tasks"
           :key="task.id"
           :task="task"
-          :name="name"
           :data-id="task.id"
           v-on="$listeners"
         ></TaskCard>
@@ -34,7 +33,7 @@ import TaskCard from './TaskCard.vue'
 const BASE_URL = 'https://blazing-kanban.herokuapp.com'
 
 export default {
-  props: ['categories', 'avatarLink', 'name'],
+  props: ['categories', 'avatarLink'],
   components: { TaskCard, draggable },
   methods: {
     onAdd: function (event, category_id) {
