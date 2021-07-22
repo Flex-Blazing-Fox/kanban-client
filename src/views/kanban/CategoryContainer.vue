@@ -13,6 +13,7 @@
           v-for="task in category.Tasks"
           :key="task.id"
           :task="task"
+          :name="name"
           :data-id="task.id"
           v-on="$listeners"
         ></TaskCard>
@@ -33,7 +34,7 @@ import TaskCard from './TaskCard.vue'
 const BASE_URL = 'https://blazing-kanban.herokuapp.com'
 
 export default {
-  props: ['categories', 'avatarLink'],
+  props: ['categories', 'avatarLink', 'name'],
   components: { TaskCard, draggable },
   methods: {
     onAdd: function (event, category_id) {

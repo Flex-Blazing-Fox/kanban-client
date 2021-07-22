@@ -49,6 +49,7 @@
         :categories="categories"
         :avatarLink="avatarLink"
         :addCategory="addCategory"
+        :name="name"
         @handleDeleteTask="handleDeleteTask"
         @handleEditTask="handleEditTask"
         v-if="isLoggedIn"
@@ -290,7 +291,7 @@ export default {
       localStorage.removeItem('access_token')
     },
     logout: function() {
-      if (gapi) {
+      if (gapi.auth2) {
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function () {
           console.log('User signed out.')
