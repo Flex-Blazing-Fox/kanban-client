@@ -13,6 +13,7 @@
       @forgotPassword="forgotPassword" 
       @register="register"
       @signIn="signIn"
+      @onSignInGoogle="onSignInGoogle"
       v-if="!isForgotPassword && isRegistered && !isLoggedIn"
     ></LoginPage>
 
@@ -49,6 +50,7 @@
         :avatarLink="avatarLink"
         :addCategory="addCategory"
         @handleDeleteTask="handleDeleteTask"
+        @handleEditTask="handleEditTask"
         v-if="isLoggedIn"
       >
         <div @click.stop="addCategory" tabindex="0" class="bg-teal-700/5 w-[280px] rounded-2xl overflow-auto flex-shrink-0 flex-grow-0 h-[58px] cursor-pointer">
@@ -62,6 +64,14 @@
           </form>
         </div>
       </CategoryContainer>
+
+      <EditTaskForm 
+        @handleEdit="handleEdit" 
+        @closeEditTask="closeEditTask"
+        :categories="categories"
+        :task="task"
+        v-if="isEditTask"
+      ></EditTaskForm>
     </div>
 
   </div>
@@ -81,6 +91,7 @@ import KanbanContainer from './views/kanban/KanbanContainer.vue'
 import KanbanSidebarContent from './views/kanban/KanbanSidebarContent.vue'
 import Profile from './views/kanban/Profile.vue'
 import TaskCard from './views/kanban/TaskCard.vue'
+import EditTaskForm from './views/kanban/EditTaskForm.vue'
 
 import ErrorBox from './components/ErrorBox.vue'
 import Sidebar from './components/Sidebar.vue'
@@ -104,6 +115,7 @@ export default {
     ErrorBox,
     Sidebar,
     Taskbar,
+    EditTaskForm
   },
   data: function() {
     return {
@@ -146,10 +158,14 @@ export default {
       isAddCategory: false,
       addCategoryInput: '',
 
-      // CREATE STATE STATE
+      // CREATE TASK STATE
       isCreateTask: false,
       createTaskTitle: '',
       createTaskCategory: '',
+
+      // EDIT TASK STATE
+      isEditTask: false,
+      task: null,
     }
   },
 
@@ -235,13 +251,53 @@ export default {
         this.showError(err.response.data.err)
       })
     },
-    logout: function() {
+    onSignInGoogle: function(payload) {
+      let { user, access_token } = payload
+      this.access_token = access_token
+      localStorage.setItem('access_token', access_token)
+      this.name = user.name
+      this.user_id = user.id
+      this.organization_id = user.organization_id
+      this.error = false
+      this.isLoggedIn = true
+      this.emailLogin = ''
+      this.passwordLogin = ''
+      this.avatarLink = `https://ui-avatars.com/api/?background=40E0D0&color=fff&name=${this.name}`
+      this.organization = this.getOrganization(user.organization_id)
+      this.showProfile = false
+
+      axios
+        .get(BASE_URL + '/categories')
+        .then(categoryRes => {
+          this.categories = categoryRes.data
+          // Filter tasks with certain organization id
+          this.categories.forEach((category) => {
+            category.Tasks = category.Tasks.filter(
+              (task) => task.organization_id === this.organization_id
+            )
+          })
+        })
+        .catch(err => {
+          this.showError(err.response.data.err)
+        })
+    },
+    clearState: function() {
       this.access_token = null
       this.isLoggedIn = false
       this.name = ''
       this.organization_id = null
       this.avatarLink = ''
       localStorage.removeItem('access_token')
+    },
+    logout: function() {
+      if (gapi) {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log('User signed out.')
+        })
+      }
+
+      this.clearState()
     },
     forgotPassword: function() {
       this.emailLogin = ''
@@ -312,10 +368,36 @@ export default {
       this.$nextTick(() => this.$refs.category.focus())
     },
     handleAddCategory: function() {
-
+      axios({
+        url: BASE_URL + '/categories',
+        method: 'POST',
+        data: {
+          name: this.addCategoryInput
+        }
+      })
+      .then(res => {
+        this.isAddCategory = false
+        this.addCategoryInput = ''
+        return axios.get(BASE_URL + '/categories')
+      })
+      .then(categoryRes => {
+        this.categories = categoryRes.data
+        // Filter tasks with certain organization id
+        this.categories.forEach((category) => {
+          category.Tasks = category.Tasks.filter(
+            (task) => task.organization_id === this.organization_id
+          )
+        })
+      })
+      .catch(err => {
+        this.showError(err.response.data.err)
+      })
     },
     closeCreateTask: function() {
       this.isCreateTask = false
+    },
+    closeEditTask: function() {
+      this.isEditTask = false
     },
     handleCreateTask: function(payload) {
       axios({
@@ -341,8 +423,47 @@ export default {
         this.createTaskTitle = ''
       })
       .catch(err => {
-        this.showError('Please try again')
+        this.showError('Title or Category must be specified')
       })
+    },
+    handleEditTask: function(taskId) {
+      console.log(taskId)
+      axios({
+        url: BASE_URL + '/tasks/' + this.organization_id,
+        method: 'GET',
+        headers: { access_token: localStorage.access_token }
+      })
+      .then(taskRes => {
+        this.task = taskRes.data.filter(task => task.id === taskId)
+        this.isEditTask = true
+      })
+    },
+    handleEdit: function(payload) {
+      axios({
+        url: BASE_URL + '/tasks/' + this.task[0].id,
+        method: 'PUT',
+        headers: { access_token: localStorage.access_token },
+        data: {
+          title: payload.editTaskTitle,
+          category_id: payload.editTaskCategory,
+          organization_id: this.organization_id,
+          user_id: this.user_id
+        }
+      })
+      .then(userRes => {
+        return axios.get(BASE_URL + '/categories')
+      })
+      .then(categoryRes => {
+        this.categories = categoryRes.data
+        // Filter tasks with certain organization id
+        this.categories.forEach((category) => {
+          category.Tasks = category.Tasks.filter(
+            (task) => task.organization_id === this.organization_id
+          )
+        })
+      })
+
+      this.closeEditTask()
     },
     handleDeleteTask: function(task_id) {
       axios({

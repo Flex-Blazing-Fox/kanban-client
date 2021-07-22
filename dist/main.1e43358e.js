@@ -10914,6 +10914,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
 //
 //
 //
@@ -10967,9 +10974,32 @@ var _default = {
       };
     }
   },
+  mounted: function mounted() {
+    gapi.signin2.render('google-signin', {
+      onsuccess: this.onSignInGoogle,
+      'width': 'full',
+      'height': 50
+    });
+  },
   methods: {
     signIn: function signIn() {
       this.$emit('signIn', this.loginData);
+    },
+    onSignInGoogle: function onSignInGoogle(user) {
+      var _this = this;
+
+      var id_token = user.getAuthResponse().id_token;
+      (0, _axios.default)({
+        url: 'http://localhost:3009/users/googleLogin',
+        method: 'POST',
+        data: {
+          id_token: id_token
+        }
+      }).then(function (res) {
+        _this.$emit('onSignInGoogle', res.data);
+      }).catch(function (err) {
+        console.log(err.response);
+      });
     }
   }
 };
@@ -11147,7 +11177,9 @@ exports.default = _default;
             [_vm._v("\n      Sign In\n    ")]
           ),
           _vm._v(" "),
-          _vm._m(0)
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { attrs: { id: "google-signin" } })
         ]
       )
     ]
@@ -11205,7 +11237,7 @@ render._withStripped = true
       
       }
     })();
-},{"_css_loader":"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/views/login/LoginPage.vue":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js","_css_loader":"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/views/login/LoginPage.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19001,7 +19033,8 @@ exports.default = _default;
         _c(
           "svg",
           {
-            staticClass: "h-5 w-5 text-teal-400 cursor-pointer",
+            staticClass:
+              "h-5 w-5 text-teal-400 hover:text-teal-600 cursor-pointer",
             attrs: {
               xmlns: "http://www.w3.org/2000/svg",
               fill: "none",
@@ -19026,7 +19059,8 @@ exports.default = _default;
         _c(
           "svg",
           {
-            staticClass: "h-5 w-5 text-red-400 cursor-pointer",
+            staticClass:
+              "h-5 w-5 text-red-400 hover:text-red-600 cursor-pointer",
             attrs: {
               xmlns: "http://www.w3.org/2000/svg",
               fill: "none",
@@ -19092,6 +19126,7 @@ var _EditTask = _interopRequireDefault(require("./EditTask.vue"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
 //
 //
 //
@@ -19195,7 +19230,7 @@ exports.default = _default;
         ]
       ),
       _vm._v(" "),
-      _c("div", [
+      _c("div", { staticClass: "flex flex-row items-center gap-2" }, [
         _c("img", {
           staticClass: "rounded-full w-7 inline-block",
           attrs: {
@@ -19204,7 +19239,16 @@ exports.default = _default;
               _vm.name,
             alt: "avatar"
           }
-        })
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "py-1 px-2 rounded-md hover:inline-block hover:bg-gray-600 text-white"
+          },
+          [_vm._v(_vm._s(_vm.name))]
+        )
       ])
     ]
   )
@@ -19487,7 +19531,7 @@ exports.default = _default;
     "div",
     {
       staticClass:
-        "p-4 absolute inset-0 transform bg-gray-500 text-black bg-opacity-60 z-50"
+        "p-4 absolute inset-0 transform bg-gray-500 text-black bg-opacity-60 z-40"
     },
     [
       _c(
@@ -20040,6 +20084,248 @@ render._withStripped = true
         
       }
     })();
+},{"vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/views/kanban/EditTaskForm.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = {
+  props: ['categories', 'task'],
+  data: function data() {
+    return {
+      editTaskTitle: this.task[0].title,
+      editTaskCategory: this.task[0].category_id
+    };
+  },
+  computed: {
+    editTaskData: function editTaskData() {
+      return {
+        editTaskTitle: this.editTaskTitle,
+        editTaskCategory: this.editTaskCategory
+      };
+    }
+  },
+  methods: {
+    handleEdit: function handleEdit() {
+      this.$emit('handleEdit', this.editTaskData);
+    }
+  }
+};
+exports.default = _default;
+        var $13329e = exports.default || module.exports;
+      
+      if (typeof $13329e === 'function') {
+        $13329e = $13329e.options;
+      }
+    
+        /* template */
+        Object.assign($13329e, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass:
+        "p-4 absolute inset-0 transform bg-gray-500 text-black bg-opacity-60 z-40"
+    },
+    [
+      _c(
+        "form",
+        {
+          staticClass:
+            "relative w-80 mx-auto mt-44 bg-gray-300 p-4 py-6 rounded-md",
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.handleEdit.apply(null, arguments)
+            }
+          }
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass:
+                "text-gray-700 absolute top-3 right-3 cursor-pointer",
+              on: {
+                click: function($event) {
+                  return _vm.$emit("closeEditTask")
+                }
+              }
+            },
+            [
+              _c(
+                "svg",
+                {
+                  staticClass: "h-5 w-5",
+                  attrs: {
+                    xmlns: "http://www.w3.org/2000/svg",
+                    viewBox: "0 0 20 20",
+                    fill: "currentColor"
+                  }
+                },
+                [
+                  _c("path", {
+                    attrs: {
+                      "fill-rule": "evenodd",
+                      d:
+                        "M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z",
+                      "clip-rule": "evenodd"
+                    }
+                  })
+                ]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "label",
+            {
+              staticClass: "text-lg font-bold text-gray-700",
+              attrs: { for: "editTaskTitle" }
+            },
+            [_vm._v("Title")]
+          ),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.editTaskTitle,
+                expression: "editTaskTitle"
+              }
+            ],
+            staticClass:
+              "w-full rounded-md my-2 border-2 border-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent",
+            attrs: { id: "editTaskTitle", type: "text" },
+            domProps: { value: _vm.editTaskTitle },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.editTaskTitle = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "label",
+            {
+              staticClass: "text-lg font-bold text-gray-700",
+              attrs: { for: "editTaskCategory" }
+            },
+            [_vm._v("Category")]
+          ),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.editTaskCategory,
+                  expression: "editTaskCategory"
+                }
+              ],
+              staticClass:
+                "w-full rounded-md mt-2 border-2 border-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent",
+              attrs: { id: "editTaskCategory" },
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.editTaskCategory = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                }
+              }
+            },
+            _vm._l(_vm.categories, function(category) {
+              return _c(
+                "option",
+                { key: category.id, domProps: { value: category.id } },
+                [_vm._v(_vm._s(category.name))]
+              )
+            }),
+            0
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass:
+                "w-full text-center mt-4 py-2 bg-teal-400 text-gray-700 font-bold rounded-md"
+            },
+            [_vm._v("Edit")]
+          )
+        ]
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$13329e', $13329e);
+          } else {
+            api.reload('$13329e', $13329e);
+          }
+        }
+
+        
+      }
+    })();
 },{"vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/ErrorBox.vue":[function(require,module,exports) {
 "use strict";
 
@@ -20075,7 +20361,7 @@ exports.default = _default;
       "div",
       {
         staticClass:
-          "absolute top-10 right-2 text-center text-white bg-red-600 px-5 py-2 rounded-md"
+          "absolute top-10 right-2 text-center text-white bg-red-600 px-5 py-2 rounded-md z-50"
       },
       [_vm._v(_vm._s(_vm.errorMessage))]
     )
@@ -20252,6 +20538,8 @@ var _Profile = _interopRequireDefault(require("./views/kanban/Profile.vue"));
 
 var _TaskCard = _interopRequireDefault(require("./views/kanban/TaskCard.vue"));
 
+var _EditTaskForm = _interopRequireDefault(require("./views/kanban/EditTaskForm.vue"));
+
 var _ErrorBox = _interopRequireDefault(require("./components/ErrorBox.vue"));
 
 var _Sidebar = _interopRequireDefault(require("./components/Sidebar.vue"));
@@ -20260,6 +20548,16 @@ var _Taskbar = _interopRequireDefault(require("./components/Taskbar.vue"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -20345,7 +20643,8 @@ var _default = {
     TaskCard: _TaskCard.default,
     ErrorBox: _ErrorBox.default,
     Sidebar: _Sidebar.default,
-    Taskbar: _Taskbar.default
+    Taskbar: _Taskbar.default,
+    EditTaskForm: _EditTaskForm.default
   },
   data: function data() {
     return {
@@ -20382,10 +20681,13 @@ var _default = {
       categories: [],
       isAddCategory: false,
       addCategoryInput: '',
-      // CREATE STATE STATE
+      // CREATE TASK STATE
       isCreateTask: false,
       createTaskTitle: '',
-      createTaskCategory: ''
+      createTaskCategory: '',
+      // EDIT TASK STATE
+      isEditTask: false,
+      task: null
     };
   },
   created: function created() {
@@ -20466,13 +20768,53 @@ var _default = {
         _this4.showError(err.response.data.err);
       });
     },
-    logout: function logout() {
+    onSignInGoogle: function onSignInGoogle(payload) {
+      var _this5 = this;
+
+      var user = payload.user,
+          access_token = payload.access_token;
+      this.access_token = access_token;
+      localStorage.setItem('access_token', access_token);
+      this.name = user.name;
+      this.user_id = user.id;
+      this.organization_id = user.organization_id;
+      this.error = false;
+      this.isLoggedIn = true;
+      this.emailLogin = '';
+      this.passwordLogin = '';
+      this.avatarLink = "https://ui-avatars.com/api/?background=40E0D0&color=fff&name=".concat(this.name);
+      this.organization = this.getOrganization(user.organization_id);
+      this.showProfile = false;
+
+      _axios.default.get(BASE_URL + '/categories').then(function (categoryRes) {
+        _this5.categories = categoryRes.data; // Filter tasks with certain organization id
+
+        _this5.categories.forEach(function (category) {
+          category.Tasks = category.Tasks.filter(function (task) {
+            return task.organization_id === _this5.organization_id;
+          });
+        });
+      }).catch(function (err) {
+        _this5.showError(err.response.data.err);
+      });
+    },
+    clearState: function clearState() {
       this.access_token = null;
       this.isLoggedIn = false;
       this.name = '';
       this.organization_id = null;
       this.avatarLink = '';
       localStorage.removeItem('access_token');
+    },
+    logout: function logout() {
+      if (gapi) {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log('User signed out.');
+        });
+      }
+
+      this.clearState();
     },
     forgotPassword: function forgotPassword() {
       this.emailLogin = '';
@@ -20495,7 +20837,7 @@ var _default = {
       this.registerLastName = '';
     },
     handleRegister: function handleRegister(payload) {
-      var _this5 = this;
+      var _this6 = this;
 
       (0, _axios.default)({
         url: BASE_URL + '/users/register',
@@ -20508,21 +20850,21 @@ var _default = {
           organization_id: payload.organizationId
         }
       }).then(function (res) {
-        _this5.login();
+        _this6.login();
 
-        _this5.registerEmail = '';
-        _this5.registerPassword = '';
-        _this5.registerOrganization = '';
-        _this5.registerFirstName = '';
-        _this5.registerLastName = '';
+        _this6.registerEmail = '';
+        _this6.registerPassword = '';
+        _this6.registerOrganization = '';
+        _this6.registerFirstName = '';
+        _this6.registerLastName = '';
       }).catch(function (err) {
         console.log(err);
 
-        _this5.showError(err.response.data.err);
+        _this6.showError(err.response.data.err);
       });
     },
     changePassword: function changePassword(payload) {
-      var _this6 = this;
+      var _this7 = this;
 
       (0, _axios.default)({
         url: BASE_URL + '/users/login',
@@ -20532,29 +20874,56 @@ var _default = {
           password: payload.password
         }
       }).then(function (res) {
-        _this6.isForgotPassword = false;
-        _this6.emailLoginF = '';
-        _this6.passwordLoginF = '';
+        _this7.isForgotPassword = false;
+        _this7.emailLoginF = '';
+        _this7.passwordLoginF = '';
       }).catch(function (err) {
         console.log(err.response);
 
-        _this6.showError(err.response.data.err);
+        _this7.showError(err.response.data.err);
       });
     },
     addCategory: function addCategory() {
-      var _this7 = this;
+      var _this8 = this;
 
       this.isAddCategory = true;
       this.$nextTick(function () {
-        return _this7.$refs.category.focus();
+        return _this8.$refs.category.focus();
       });
     },
-    handleAddCategory: function handleAddCategory() {},
+    handleAddCategory: function handleAddCategory() {
+      var _this9 = this;
+
+      (0, _axios.default)({
+        url: BASE_URL + '/categories',
+        method: 'POST',
+        data: {
+          name: this.addCategoryInput
+        }
+      }).then(function (res) {
+        _this9.isAddCategory = false;
+        _this9.addCategoryInput = '';
+        return _axios.default.get(BASE_URL + '/categories');
+      }).then(function (categoryRes) {
+        _this9.categories = categoryRes.data; // Filter tasks with certain organization id
+
+        _this9.categories.forEach(function (category) {
+          category.Tasks = category.Tasks.filter(function (task) {
+            return task.organization_id === _this9.organization_id;
+          });
+        });
+      }).catch(function (err) {
+        _this9.showError(err.response.data.err);
+      });
+    },
     closeCreateTask: function closeCreateTask() {
       this.isCreateTask = false;
     },
+    closeEditTask: function closeEditTask() {
+      this.isEditTask = false;
+    },
     handleCreateTask: function handleCreateTask(payload) {
-      var _this8 = this;
+      var _this10 = this;
 
       (0, _axios.default)({
         url: BASE_URL + '/tasks',
@@ -20569,21 +20938,66 @@ var _default = {
           user_id: this.user_id
         }
       }).then(function (taskRes) {
-        _this8.categories.forEach(function (category) {
+        _this10.categories.forEach(function (category) {
           if (category.id === taskRes.data.task.category_id) {
             category.Tasks.push(taskRes.data.task);
           }
         });
 
-        _this8.isCreateTask = false;
-        _this8.createTaskCategory = '';
-        _this8.createTaskTitle = '';
+        _this10.isCreateTask = false;
+        _this10.createTaskCategory = '';
+        _this10.createTaskTitle = '';
       }).catch(function (err) {
-        _this8.showError('Please try again');
+        _this10.showError('Title or Category must be specified');
       });
     },
+    handleEditTask: function handleEditTask(taskId) {
+      var _this11 = this;
+
+      console.log(taskId);
+      (0, _axios.default)({
+        url: BASE_URL + '/tasks/' + this.organization_id,
+        method: 'GET',
+        headers: {
+          access_token: localStorage.access_token
+        }
+      }).then(function (taskRes) {
+        _this11.task = taskRes.data.filter(function (task) {
+          return task.id === taskId;
+        });
+        _this11.isEditTask = true;
+      });
+    },
+    handleEdit: function handleEdit(payload) {
+      var _this12 = this;
+
+      (0, _axios.default)({
+        url: BASE_URL + '/tasks/' + this.task[0].id,
+        method: 'PUT',
+        headers: {
+          access_token: localStorage.access_token
+        },
+        data: {
+          title: payload.editTaskTitle,
+          category_id: payload.editTaskCategory,
+          organization_id: this.organization_id,
+          user_id: this.user_id
+        }
+      }).then(function (userRes) {
+        return _axios.default.get(BASE_URL + '/categories');
+      }).then(function (categoryRes) {
+        _this12.categories = categoryRes.data; // Filter tasks with certain organization id
+
+        _this12.categories.forEach(function (category) {
+          category.Tasks = category.Tasks.filter(function (task) {
+            return task.organization_id === _this12.organization_id;
+          });
+        });
+      });
+      this.closeEditTask();
+    },
     handleDeleteTask: function handleDeleteTask(task_id) {
-      var _this9 = this;
+      var _this13 = this;
 
       (0, _axios.default)({
         url: BASE_URL + '/tasks/' + task_id,
@@ -20592,13 +21006,13 @@ var _default = {
           access_token: localStorage.access_token
         }
       }).then(function (res) {
-        _this9.categories.forEach(function (category) {
+        _this13.categories.forEach(function (category) {
           category.Tasks = category.Tasks.filter(function (task) {
             return task.id !== task_id;
           });
         });
       }).catch(function (err) {
-        _this9.showError(err.response.data.err);
+        _this13.showError(err.response.data.err);
       });
     }
   }
@@ -20639,7 +21053,8 @@ exports.default = _default;
             on: {
               forgotPassword: _vm.forgotPassword,
               register: _vm.register,
-              signIn: _vm.signIn
+              signIn: _vm.signIn,
+              onSignInGoogle: _vm.onSignInGoogle
             }
           })
         : _vm._e(),
@@ -20721,7 +21136,10 @@ exports.default = _default;
                     avatarLink: _vm.avatarLink,
                     addCategory: _vm.addCategory
                   },
-                  on: { handleDeleteTask: _vm.handleDeleteTask }
+                  on: {
+                    handleDeleteTask: _vm.handleDeleteTask,
+                    handleEditTask: _vm.handleEditTask
+                  }
                 },
                 [
                   _c(
@@ -20819,6 +21237,16 @@ exports.default = _default;
                   )
                 ]
               )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.isEditTask
+            ? _c("EditTaskForm", {
+                attrs: { categories: _vm.categories, task: _vm.task },
+                on: {
+                  handleEdit: _vm.handleEdit,
+                  closeEditTask: _vm.closeEditTask
+                }
+              })
             : _vm._e()
         ],
         1
@@ -20856,7 +21284,7 @@ render._withStripped = true
         
       }
     })();
-},{"axios":"node_modules/axios/index.js","./views/login/LoginPage.vue":"src/views/login/LoginPage.vue","./views/login/RegisterPage.vue":"src/views/login/RegisterPage.vue","./views/login/ForgotPasswordPage.vue":"src/views/login/ForgotPasswordPage.vue","./views/kanban/CategoryContainer.vue":"src/views/kanban/CategoryContainer.vue","./views/kanban/CreateTaskForm.vue":"src/views/kanban/CreateTaskForm.vue","./views/kanban/EditTask.vue":"src/views/kanban/EditTask.vue","./views/kanban/KanbanContainer.vue":"src/views/kanban/KanbanContainer.vue","./views/kanban/KanbanSidebarContent.vue":"src/views/kanban/KanbanSidebarContent.vue","./views/kanban/Profile.vue":"src/views/kanban/Profile.vue","./views/kanban/TaskCard.vue":"src/views/kanban/TaskCard.vue","./components/ErrorBox.vue":"src/components/ErrorBox.vue","./components/Sidebar.vue":"src/components/Sidebar.vue","./components/Taskbar.vue":"src/components/Taskbar.vue","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/main.js":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js","./views/login/LoginPage.vue":"src/views/login/LoginPage.vue","./views/login/RegisterPage.vue":"src/views/login/RegisterPage.vue","./views/login/ForgotPasswordPage.vue":"src/views/login/ForgotPasswordPage.vue","./views/kanban/CategoryContainer.vue":"src/views/kanban/CategoryContainer.vue","./views/kanban/CreateTaskForm.vue":"src/views/kanban/CreateTaskForm.vue","./views/kanban/EditTask.vue":"src/views/kanban/EditTask.vue","./views/kanban/KanbanContainer.vue":"src/views/kanban/KanbanContainer.vue","./views/kanban/KanbanSidebarContent.vue":"src/views/kanban/KanbanSidebarContent.vue","./views/kanban/Profile.vue":"src/views/kanban/Profile.vue","./views/kanban/TaskCard.vue":"src/views/kanban/TaskCard.vue","./views/kanban/EditTaskForm.vue":"src/views/kanban/EditTaskForm.vue","./components/ErrorBox.vue":"src/components/ErrorBox.vue","./components/Sidebar.vue":"src/components/Sidebar.vue","./components/Taskbar.vue":"src/components/Taskbar.vue","vue-hot-reload-api":"../../../../../node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/main.js":[function(require,module,exports) {
 "use strict";
 
 var _vue = _interopRequireDefault(require("vue"));
@@ -20898,7 +21326,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33871" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40499" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

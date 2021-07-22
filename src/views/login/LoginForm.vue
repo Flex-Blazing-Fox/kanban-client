@@ -32,11 +32,15 @@
         <span class="px-2 uppercase font-bold tracking-wider">or</span>
         <div class="h-1 w-full bg-teal-800"></div>
       </div>
+
+      <div id="google-signin"></div>
     </form>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data: function() {
     return {
@@ -52,9 +56,30 @@ export default {
       }
     }
   },
+  mounted() {
+    gapi.signin2.render('google-signin', {
+      onsuccess: this.onSignInGoogle,
+      'width': 'full',
+      'height': 50,
+    })
+  },
   methods: {
     signIn: function() {
       this.$emit('signIn', this.loginData)
+    },
+    onSignInGoogle: function(user) {
+      const id_token = user.getAuthResponse().id_token
+      axios({
+        url: 'http://localhost:3009/users/googleLogin',
+        method: 'POST',
+        data: { id_token }
+      })
+      .then(res => {
+        this.$emit('onSignInGoogle', res.data)
+      })
+      .catch(err => {
+        console.log(err.response)
+      })
     }
   }
 }

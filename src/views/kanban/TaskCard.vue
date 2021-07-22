@@ -9,8 +9,9 @@
         <EditTask v-if="isEditable" :taskId="task.id" v-on="$listeners"></EditTask>
       </div>
     </div>
-    <div>
+    <div class="flex flex-row items-center gap-2">
       <img :src="'https://ui-avatars.com/api/?background=40E0D0&color=fff&name=' + name" alt="avatar" class="rounded-full w-7 inline-block" />
+      <div class="py-1 px-2 rounded-md hover:inline-block hover:bg-gray-600 text-white">{{ name }}</div>
     </div>
   </div>
 </template>

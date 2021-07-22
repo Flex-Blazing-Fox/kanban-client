@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 absolute inset-0 transform bg-gray-500 text-black bg-opacity-60 z-50">
+  <div class="p-4 absolute inset-0 transform bg-gray-500 text-black bg-opacity-60 z-40">
     <form @submit.prevent="handleCreateTask" class="relative w-80 mx-auto mt-44 bg-gray-300 p-4 py-6 rounded-md">
       <div @click="$emit('closeCreateTask')" class="text-gray-700 absolute top-3 right-3 cursor-pointer">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
