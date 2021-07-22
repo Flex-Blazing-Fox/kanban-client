@@ -2,9 +2,18 @@
     <section>
         <div class="ui container board">
             <div class="ui grid">
-                <Board v-for="board in boards" :key="board.id" :board="board" :taskList="filteredTask"></Board>
+                <Board 
+                    v-for="board in boards" 
+                    :key="board.id" 
+                    :board="board" 
+                    :taskList="filteredTask"
+                    @addButton="add"
+                    @deleteTask="deleteTask"
+                    @changeCategory="changeCategory"
+                    ></Board>
             </div>
         </div>
+        
     </section>
 </template>
 
@@ -29,17 +38,25 @@ export default {
         filteredTask(){
             let obj = {}
              
-                this.tasks.forEach(e => {
-                    console.log(obj[e.category]);
-                    if(obj[e.category] === undefined) obj[e.category] = []
-                    obj[e.category].push(e);
-                });
+            this.tasks.forEach(e => {
+                if(obj[e.category] === undefined) obj[e.category] = []
+                obj[e.category].push(e);
+            });
                 
-            
-            // console.log(obj);
             return obj;
         }
     },
+    methods:{
+        add(){
+            console.log('ini dari board');
+        },
+        changeCategory(id, category){
+            this.$emit('changeCategory', id, category)
+        },
+        deleteTask(id){
+            this.$emit('deleteTask',id)
+        },
+    }
 }
 </script>
 

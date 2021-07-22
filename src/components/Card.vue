@@ -1,16 +1,27 @@
 <template>
     <div class="ui cards">
         <div class="ui card card-item">
-            <div class="content">
+            <div class="content move">
                 <div>
-                    <i class="left floated edit icon"></i>
-                    <i class="right floated close icon"></i>
+                    <sui-dropdown  text="Options" class="yuhu" pointing>
+                        <sui-dropdown-menu >
+                            <sui-dropdown-item @click="changeCategory(taskData.id, 'backlog')">BackLog</sui-dropdown-item>
+                            <sui-dropdown-item @click="changeCategory(taskData.id, 'todos')">Todos</sui-dropdown-item>
+                            <sui-dropdown-item @click="changeCategory(taskData.id, 'doing')">Doing</sui-dropdown-item>
+                            <sui-dropdown-item @click="changeCategory(taskData.id, 'done')">Done</sui-dropdown-item>
+                        </sui-dropdown-menu>
+                    </sui-dropdown>
+                    <a href="#" @click="deleteTask(taskData.id)"><i class="right floated close icon"></i></a>
                 </div>
             </div>
             <div class="content description">                
-                <p>
-                    {{taskData.title}}
-                </p>
+                <textarea-autosize
+                    placeholder="Type something here..."
+                    ref="myTextarea"
+                    v-model="taskData.title"
+                    :min-height="30"
+                    :max-height="350"
+                />
             </div>
             <div class="extra content">
                 <div class="left floated author">
@@ -25,18 +36,53 @@
 export default {
     name:"Card",
     props: ['taskData'],
+    data(){
+        return {
+                        
+        }
+    },
+    watch:{
+        
+    },
+    methods:{
+        deleteTask(id){
+            this.$emit('deleteTask',id)
+        },
+        changeCategory(id, category){
+            this.$emit('changeCategory', id, category)
+        }
+    }
 }
 </script>
 
 <style scoped>
     .description{
         color:#fff;
+        background:salmon;
     }
     .description p {
         font-size:11px;
         letter-spacing: 0.5px;
         font-weight: 500;
         font-family: 'Montserrat', sans-serif;
+    }
+    .description textarea{
+        display: block;
+        box-sizing: padding-box;
+        overflow: hidden;
+        width:100%;
+        height:auto;
+        background: rgba(0, 102, 90, 0.9);
+        border:1px solid rgba(1, 122, 108, 0.9);
+        color:#fff;
+        margin:-7px -10px -7px -7px;
+        padding:5px;
+        font-size:11px;
+        letter-spacing: 0.5px;
+        line-height:15px;
+        font-weight: 500;
+        font-family: 'Montserrat', sans-serif;
+        
     }
     .author{
         color:#fff;
@@ -50,5 +96,14 @@ export default {
         color:rgb(255, 255, 255);
         background: rgba(0, 102, 90, 0.9);
         box-shadow: 1px 2px 5px #000;
+    }
+    .move {cursor: move;}
+    .yuhu{
+        font-size:9px;
+        font-family: 'Montserrat', sans-serif;
+    }
+    .nex{
+        font-size:9px;
+        font-family: 'Montserrat', sans-serif;
     }
 </style>

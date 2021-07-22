@@ -21,7 +21,11 @@
 
         <!-- Dashboad -->
         <Dashboard 
-            v-else-if="currentPages === 'dashboard'" :isLogin="{isLogin}"
+            v-else-if="currentPages === 'dashboard'" 
+            :isLogin="{isLogin}"
+            @addButton="cek"
+            @deleteTask="deleteTask"
+            @changeCategory="changeCategory"
             :tasks="tasks">
         </Dashboard>
         <!-- End Of Dashboard -->
@@ -57,6 +61,9 @@ export default {
         }
     },
     methods:{
+        cek(){
+            console.log('cek');
+        },
         authCheking(){
             if(localStorage.access_token){
                 console.log('login berhasil');
@@ -71,7 +78,6 @@ export default {
             this.currentPages = pages
         },
         login(loginData){
-            console.log(loginData);
             axios({
                 method: 'POST',
                 url: '/users/login',
@@ -102,6 +108,40 @@ export default {
             })
             .then(({data}) => {
                 this.tasks = data
+            })
+            .catch(err => {
+                console.log(err.response.data[0].message);
+            })
+        },
+        changeCategory(id, category){
+            console.log(id);
+            axios({
+                method:'PATCH',
+                url:`/tasks/category/${id}`,
+                headers:{
+                    access_token:localStorage.access_token
+                },
+                data:{
+                    category:category
+                },
+            })
+            .then((data)=>{
+                this.fetchAllTask()
+            })
+            .catch(err=>{
+                console.log(err.response.data[0].message);
+            })
+        },
+        deleteTask(id){
+            axios({
+                method:'DELETE',
+                url:`/tasks/${id}`,
+                headers:{
+                    access_token:localStorage.access_token
+                }
+            })
+            .then(()=>{
+                this.fetchAllTask();
             })
             .catch(err => {
                 console.log(err.response.data[0].message);

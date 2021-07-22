@@ -7,7 +7,7 @@
             <div class="content ">
                 <draggable :list="taskList[board.name]" ghost-class="gost-card" v-bind="dragOptions" @change="log" group="all-tasks"  :move="onMove"  @start="isDragging=true" @end="isDragging=false">
                     <!-- {{taskList[board.name]}} -->
-                    <Card v-for="task in taskList[board.name]" :key="task.id" :taskData="task" class="move" :name="'flip-list'"></Card>
+                    <Card v-for="task in taskList[board.name]" :key="task.id" :taskData="task" @deleteTask="deleteTask" @changeCategory="changeCategory" :name="'flip-list'"></Card>
                 </draggable>
                 <!-- <draggable v-model="taskList[board.name]" v-bind="dragOptions" :move="onMove"  @start="isDragging=true" @end="isDragging=false">
                     <transition-group type="transition" :name="'flip-list'">
@@ -15,27 +15,26 @@
                     </transition-group>
                 </draggable> -->
             </div>
-            <div class="ui bottom green attached button">
-                <i class="add icon"></i>
-                Add Task
-            </div>
+            <AddNewTask @addButton="add" :category="board.name"></AddNewTask>
         </div>
     </div>
 </template>
 
 <script>
-import draggable from "vuedraggable"
-import Card from "../components/Card.vue"
+import draggable from "vuedraggable";
+import Card from "../components/Card.vue";
+import AddNewTask from "../components/AddNewTask.vue";
 
 export default {
     name:"Board",
     props: ['board', 'taskList'],
-    components:{ Card, draggable },
+    components:{ Card, draggable, AddNewTask },
     data(){
         return{
             editable: true,
             isDragging: false,
             delayedDragging: false,
+            count:0
            
         }
     },
@@ -61,8 +60,18 @@ export default {
     }
   },
     methods:{
+        add(){
+
+            this.$emit('addButton')
+        },
+        changeCategory(id, category){
+            this.$emit('changeCategory', id, category)
+        },
+        deleteTask(id){
+            this.$emit('deleteTask',id)
+        },
         onMove({ relatedContext, draggedContext }) {
-            console.log(relatedContext);
+            // console.log(relatedContext.element);
             const relatedElement = relatedContext.element;
             const draggedElement = draggedContext.element;
             return (
@@ -70,7 +79,7 @@ export default {
             );
         },
         log(event) {
-            console.log(event);
+            // console.log(event);
            if(event.removed){
                console.log(event.removed.element.id)
            }
