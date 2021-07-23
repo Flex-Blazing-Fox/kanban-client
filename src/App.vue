@@ -78,8 +78,8 @@ import Toastify from 'toastify-js'
 import Category from './component/Category.vue'
 import Navbar from './component/Navbar.vue'
 
-// Axios.defaults.baseURL = 'https://kanban-server-9.herokuapp.com'
-Axios.defaults.baseURL = 'http://localhost:3000'
+Axios.defaults.baseURL = 'https://kanban-server-9.herokuapp.com'
+// Axios.defaults.baseURL = 'http://localhost:3000'
 const option= {
             text: '',
             duration: 3000,
