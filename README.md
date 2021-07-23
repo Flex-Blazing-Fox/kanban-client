@@ -1,9 +1,11 @@
 # Kanban Client
 
-Deployed version: `https://blazing-kanban.web.app/`
+Deployed version:
+
+[https://blazing-kanban2.web.app/](https://blazing-kanban2.web.app/)
 
 How to setup a live development server:
 ```
-npm run vite
+npm run dev && parcel index.html
 ```
 
