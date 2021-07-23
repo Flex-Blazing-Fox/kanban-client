@@ -25,7 +25,7 @@
             </div>
             <div class="extra content">
                 <div class="left floated author">
-                    <img class="ui avatar image" src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg"> <span>{{taskData.User.fullname}}</span>
+                    <img :src="imgURL" class="ui avatar"> <span>{{taskData.User.fullname}}</span>
                 </div>
             </div>
         </div>          
@@ -37,6 +37,11 @@
 export default {
     name:"Card",
     props: ['taskData'],
+    data(){
+        return {
+            imgURL:''
+        }
+    },
     methods:{
         deleteTask(id){
             this.$emit('deleteTask',id)
@@ -52,7 +57,9 @@ export default {
             event.target.style.height = `${event.target.scrollHeight}px`;
         }
     },
+ 
     mounted() {
+        this.imgURL = `https://ui-avatars.com/api/?name=${this.taskData.User.fullname}&size=32`
         this.$nextTick(() => {
             this.$el.setAttribute("style", "height", `${this.$el.scrollHeight}px`);
         });

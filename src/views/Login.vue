@@ -57,7 +57,6 @@ export default {
             this.$emit('loginData', this.loginData)
         },
         onSuccess(googleUser) {
-            console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
             let id_token = googleUser.getAuthResponse().id_token;
 
             axios({

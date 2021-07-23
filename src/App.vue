@@ -88,12 +88,11 @@ export default {
         },
         authCheking(){
             if(localStorage.access_token){
-                console.log('login berhasil');
                 this.currentPages = 'dashboard'
                 this.isLogin = true;
                 this.fetchAllTask()
             }else{
-                console.log(`belum login`);
+                this.currentPages = ''
             }
         },
         changeView(pages){

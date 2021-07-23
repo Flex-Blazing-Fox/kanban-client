@@ -1,6 +1,8 @@
 <template>
     <section>
+        
         <div class="ui container board">
+            <p class="tips">* Tips : Tekan <code><strong>Ctrl + Enter</strong></code> untuk menyimpan perubahan.</p>
             <div class="ui grid">
                 <Board 
                     v-for="board in boards" 
@@ -73,5 +75,10 @@ section{
 }
 .board{
     padding-top:80px;
+}
+.tips{
+    color:#fff;
+    font-size:11px;
+    font-family: 'Montserrat', sans-serif;
 }
 </style>

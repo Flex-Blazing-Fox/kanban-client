@@ -2,9 +2,9 @@
     <div class="ui four wide column">
         <div class="ui card board-category">
             <div class="content">
-                <div class="board-header">{{ board.name }}</div>
+                <div class="board-header">{{ board.name.toUpperCase() }}</div>
             </div>
-            <div class="content ">
+            <div class="content box">
                 <draggable :list="taskList[board.name]" ghost-class="gost-card" v-bind="dragOptions" v-model="taskList[board.name]" @change="log" group="all-tasks">
                     <!-- {{taskList[board.name]}} -->
                     <Card 
@@ -124,6 +124,7 @@ section{
 .ui.card.board-category{
     color:teal;
     background: rgba(244, 244, 244, 0.2);
+    
 }
 .ghost-card {
   opacity: 0.5;
@@ -131,4 +132,11 @@ section{
   border: 1px solid #4299e1;
 }
 .move {cursor: move;}
+.box{
+    overflow-y: scroll;
+    height: 75vh;
+}
+::-webkit-scrollbar {
+  width: 1px;
+}
 </style>
