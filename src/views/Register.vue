@@ -28,7 +28,7 @@
                             <input type="password" v-model="confirmPassword" placeholder="Confirm Password">
                         </div>
                     </div>
-                    <button  @click="register" :disabled="buttonDisabled" class="ui button fluid orange big" color="teal" type="submit">Sign Up</button>
+                    <button  @click.prevent="register" :disabled="buttonDisabled" class="ui button fluid orange big" color="teal" type="submit">Sign Up</button>
                 </div>
             </div>
         </div>

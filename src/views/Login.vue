@@ -22,7 +22,7 @@
                                         <input type="password" v-model="loginData.password" placeholder="Password">
                                     </div>
                                 </div>
-                                <button @click="login" type="submit" class="ui button fluid orange big" color="teal">Sign In</button>
+                                <button @click.prevent="login" type="submit" class="ui button fluid orange big" color="teal">Sign In</button>
                             </div>
                         </form>
                     </div>
@@ -62,7 +62,7 @@ export default {
 
             axios({
                 method: 'POST',
-                url:'http://localhost:3000/users/googleLogin',
+                url:'https://kanban-blazing.herokuapp.com/users/googleLogin',
                 data:{
                     idToken : id_token
                 }

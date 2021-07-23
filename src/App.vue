@@ -54,7 +54,7 @@ import Register from "./views/Register.vue"
 import Dashboard from "./views/Dashboard.vue"
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = "https://kanban-blazing.herokuapp.com";
 
 export default {
     name:'App',
@@ -145,7 +145,8 @@ export default {
             this.isLogin = false
 
             var auth2 = gapi.auth2.getAuthInstance();
-                auth2.signOut().then(function () {
+            
+            auth2.signOut().then(function () {
                 console.log('User signed out.');
             });
         },
@@ -156,7 +157,6 @@ export default {
                 }
             })
             .then(({data}) => {
-                console.log(data);
                 this.tasks = data
             })
             .catch(err => {
@@ -164,7 +164,6 @@ export default {
             })
         },
         updateTask(id,title){
-            console.log(`lagi ${title}`);
             axios({
                 method:'PATCH',
                 url:`/tasks/title/${id}`,

@@ -58,7 +58,6 @@ export default {
             this.$emit('deleteTask',id)
         },
         updateTask(id,title){
-            console.log(`dashboard- ${title}`);
             this.$emit('updateTask', id,title)
         },
     }
