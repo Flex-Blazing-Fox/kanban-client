@@ -1,7 +1,7 @@
 <template>
-    <button class="ui bottom green attached button" @click="add">
+    <button class="ui bottom green attached button" @click="add(category)">
          <i class="add icon"></i>
-            Add Task ({{this.category}})
+            Add Task ({{category}})
     </button>
 </template>
 
@@ -10,10 +10,10 @@ export default {
     name:"AddNewTask",
     props:['category'],
     methods:{
-        add(){
-            this.$emit('addButton')
+        add(category){
+            this.$emit('addButton', category)
         }
-    }
+    },
 }
 </script>
 

@@ -23,9 +23,10 @@
         <Dashboard 
             v-else-if="currentPages === 'dashboard'" 
             :isLogin="{isLogin}"
-            @addButton="cek"
+            @addButton="add"
             @deleteTask="deleteTask"
             @changeCategory="changeCategory"
+            @updateTask="updateTask"
             :tasks="tasks">
         </Dashboard>
         <!-- End Of Dashboard -->
@@ -61,8 +62,24 @@ export default {
         }
     },
     methods:{
-        cek(){
-            console.log('cek');
+        add(category){
+            axios({
+                method: 'POST',
+                url: '/tasks',
+                headers:{
+                    access_token: localStorage.access_token
+                },
+                data:{
+                    title:'',
+                    category:category
+                }
+            })
+            .then(()=>{
+                this.fetchAllTask()
+            })
+            .catch(err=>{
+                console.log(err.response.data[0].message);
+            })
         },
         authCheking(){
             if(localStorage.access_token){
@@ -113,8 +130,26 @@ export default {
                 console.log(err.response.data[0].message);
             })
         },
+        updateTask(id,title){
+            console.log(`lagi ${title}`);
+            axios({
+                method:'PATCH',
+                url:`/tasks/title/${id}`,
+                headers:{
+                    access_token:localStorage.access_token
+                },
+                data:{
+                    title:title
+                },
+            })
+            .then(()=>{
+                this.fetchAllTask()
+            })
+            .catch(err=>{
+                console.log(err.response.data[0].message);
+            })
+        },
         changeCategory(id, category){
-            console.log(id);
             axios({
                 method:'PATCH',
                 url:`/tasks/category/${id}`,
@@ -125,7 +160,7 @@ export default {
                     category:category
                 },
             })
-            .then((data)=>{
+            .then(()=>{
                 this.fetchAllTask()
             })
             .catch(err=>{

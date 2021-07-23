@@ -5,9 +5,17 @@
                 <div class="board-header">{{ board.name }}</div>
             </div>
             <div class="content ">
-                <draggable :list="taskList[board.name]" ghost-class="gost-card" v-bind="dragOptions" @change="log" group="all-tasks"  :move="onMove"  @start="isDragging=true" @end="isDragging=false">
+                <draggable :list="taskList[board.name]" ghost-class="gost-card" v-bind="dragOptions" v-model="taskList[board.name]" @change="log" group="all-tasks">
                     <!-- {{taskList[board.name]}} -->
-                    <Card v-for="task in taskList[board.name]" :key="task.id" :taskData="task" @deleteTask="deleteTask" @changeCategory="changeCategory" :name="'flip-list'"></Card>
+                    <Card 
+                        v-for="task in taskList[board.name]" 
+                        :key="task.id" 
+                        :taskData="task" 
+                        @deleteTask="deleteTask" 
+                        @changeCategory="changeCategory" 
+                        @updateTask="updateTask"
+                        :name="'flip-list'">
+                    </Card>
                 </draggable>
                 <!-- <draggable v-model="taskList[board.name]" v-bind="dragOptions" :move="onMove"  @start="isDragging=true" @end="isDragging=false">
                     <transition-group type="transition" :name="'flip-list'">
@@ -33,9 +41,7 @@ export default {
         return{
             editable: true,
             isDragging: false,
-            delayedDragging: false,
-            count:0
-           
+            delayedDragging: false,           
         }
     },
     computed:{
@@ -49,26 +55,28 @@ export default {
         },
     },
     watch: {
-    isDragging(newValue) {
-      if (newValue) {
-        this.delayedDragging = true;
-        return;
-      }
-      this.$nextTick(() => {
-        this.delayedDragging = false;
-      });
-    }
-  },
+        isDragging(newValue) {
+            if (newValue) {
+                this.delayedDragging = true;
+                return;
+            }
+            this.$nextTick(() => {
+                this.delayedDragging = false;
+            });
+        }
+    },
     methods:{
-        add(){
-
-            this.$emit('addButton')
+        add(category){
+            this.$emit('addButton', category)
         },
         changeCategory(id, category){
             this.$emit('changeCategory', id, category)
         },
         deleteTask(id){
             this.$emit('deleteTask',id)
+        },
+        updateTask(id,title){
+            this.$emit('updateTask', id, title)
         },
         onMove({ relatedContext, draggedContext }) {
             // console.log(relatedContext.element);

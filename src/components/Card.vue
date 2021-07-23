@@ -15,13 +15,38 @@
                 </div>
             </div>
             <div class="content description">                
-                <textarea-autosize
+                <!-- <TextareaAutosize
+                    class="inputan"
                     placeholder="Type something here..."
                     ref="myTextarea"
                     v-model="taskData.title"
-                    :min-height="30"
+                    :min-height="35"
                     :max-height="350"
-                />
+                    :style="{width:computedWidth}"
+                    @input="changeWidth"
+                    v-on:update="updateTask(taskData.id, taskData.title)"
+                > -->
+                <!-- <textarea
+                    class="inputan"
+                    placeholder="Type something here..."
+                    ref="myTextarea"
+                    v-model="taskData.title"
+                    :min-height="35"
+                    :max-height="350"
+                    :style="{width:computedWidth}"
+                    @input="changeWidth"
+                    v-on:keyup.enter="updateTask(taskData.id, taskData.title)"
+                ></textarea> -->
+                    <textarea
+                        placeholder="Type something here..."
+                        :min-height="40"
+                        rows="2"
+                        :max-height="350"
+                        v-model="taskData.title"
+                        class="textarea"
+                        @input="resize"
+                        v-on:keyup.enter="updateTask(taskData.id, taskData.title)"
+                    ></textarea>
             </div>
             <div class="extra content">
                 <div class="left floated author">
@@ -33,24 +58,34 @@
 </template>
 
 <script>
+
 export default {
     name:"Card",
     props: ['taskData'],
-    data(){
-        return {
-                        
-        }
-    },
-    watch:{
-        
-    },
     methods:{
         deleteTask(id){
             this.$emit('deleteTask',id)
         },
         changeCategory(id, category){
             this.$emit('changeCategory', id, category)
+        },
+        updateTask(id, title){
+            this.$emit('updateTask', id, title)
+        },
+        resize(event) {
+            event.target.style.height = "auto";
+            event.target.style.height = `${event.target.scrollHeight}px`;
         }
+    },
+    mounted() {
+        this.$nextTick(() => {
+            this.$el.setAttribute("style", "height", `${this.$el.scrollHeight}px`);
+        });
+    },
+    render() {
+        return this.$scopedSlots.default({
+            resize: this.resize
+        });
     }
 }
 </script>
@@ -71,7 +106,8 @@ export default {
         box-sizing: padding-box;
         overflow: hidden;
         width:100%;
-        height:auto;
+        min-height: 35px;
+        max-height: 350px;
         background: rgba(0, 102, 90, 0.9);
         border:1px solid rgba(1, 122, 108, 0.9);
         color:#fff;

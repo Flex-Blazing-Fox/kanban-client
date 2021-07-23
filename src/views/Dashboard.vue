@@ -10,6 +10,7 @@
                     @addButton="add"
                     @deleteTask="deleteTask"
                     @changeCategory="changeCategory"
+                    @updateTask="updateTask"
                     ></Board>
             </div>
         </div>
@@ -47,14 +48,18 @@ export default {
         }
     },
     methods:{
-        add(){
-            console.log('ini dari board');
+        add(category){
+            this.$emit('addButton', category)
         },
         changeCategory(id, category){
             this.$emit('changeCategory', id, category)
         },
         deleteTask(id){
             this.$emit('deleteTask',id)
+        },
+        updateTask(id,title){
+            console.log(`dashboard- ${title}`);
+            this.$emit('updateTask', id,title)
         },
     }
 }
