@@ -16,7 +16,8 @@
     background-color: wheat;
   }
   .button{
-      font-size: 15px ;
+    padding-bottom: 10px;
+    font-size: 15px ;
   }
   .boards-container {
     display: grid;
@@ -44,4 +45,7 @@
 .boards-container__board h1 {
     font-size: 16px;
     margin: 0 0 12px 0;
+}
+.g-signin2{
+  padding-bottom: 10px;
 }
