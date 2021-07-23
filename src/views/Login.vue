@@ -27,11 +27,10 @@
                         </form>
                     </div>
                     <div class="column">
-                        <div class="ui icon header">
+                        <!-- <div class="ui icon header">
                            <h2 class="ui header center aligned">Social Login</h2>
-                        </div>
-                        <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div>
-                        <div :id="my-signin2" data-onsuccess="onSignIn"></div> -->
+                        </div> -->
+                        <div id="my-signin2"></div>
                     </div>
                 </div>
             </div>
@@ -41,6 +40,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 
 export default {
     name:"Login",
@@ -55,7 +55,37 @@ export default {
     methods:{
         login(){
             this.$emit('loginData', this.loginData)
+        },
+        onSuccess(googleUser) {
+            console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+            let id_token = googleUser.getAuthResponse().id_token;
+
+            axios({
+                method: 'POST',
+                url:'http://localhost:3000/users/googleLogin',
+                data:{
+                    idToken : id_token
+                }
+            })
+            .then(({data}) => {     
+                localStorage.setItem('access_token', data.access_token)
+                this.$emit('googleLogin', 'dashboard')
+            })
+            .catch(err=> {
+               console.log(err.response.data[0].message);
+            })
+            
         }
+    },
+    mounted(){
+        gapi.signin2.render('my-signin2', {
+        'scope': 'profile email',
+        'width': 'full',
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': this.onSuccess,
+      });
     }
 }
 </script>
@@ -80,7 +110,6 @@ section{
 
 .ui.inner{
     background-color: teal;
-    z-index: 999;
 }
 
 .ui.header{

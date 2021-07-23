@@ -11,10 +11,11 @@
         <!-- Login Page -->
         <Login 
             v-if="currentPages === 'login'"
-            @loginData="login">
+            @loginData="login"
+            @googleLogin="googleLogin">
         </Login>
         <!-- End Of Login Page -->
-
+         
         <!-- Register Page -->
         <Register 
             v-else-if="currentPages === 'register'"
@@ -34,14 +35,14 @@
             :tasks="tasks">
         </Dashboard>
         <!-- End Of Dashboard -->
-
+        
         <!-- Landing Page -->
         <LandingPage 
             v-else
             @changePages="changeView">
         </LandingPage>
         <!-- End Of Landing Page -->
-
+        
     </div>
 </template>
 
@@ -116,6 +117,10 @@ export default {
                 console.log(err.response.data);
             })
         },
+        googleLogin(pages){
+             this.currentPages = pages
+             this.authCheking()
+        },
         login(loginData){
             axios({
                 method: 'POST',
@@ -138,6 +143,11 @@ export default {
             localStorage.clear()
             this.currentPages = ''
             this.isLogin = false
+
+            var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                console.log('User signed out.');
+            });
         },
         fetchAllTask(){
             axios.get('/tasks', {
@@ -208,7 +218,8 @@ export default {
     },
     created: function (){
         this.authCheking()
-    }
+    },
+    
 }
 </script>
 
