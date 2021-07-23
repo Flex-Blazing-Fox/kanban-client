@@ -17,11 +17,6 @@
                         :name="'flip-list'">
                     </Card>
                 </draggable>
-                <!-- <draggable v-model="taskList[board.name]" v-bind="dragOptions" :move="onMove"  @start="isDragging=true" @end="isDragging=false">
-                    <transition-group type="transition" :name="'flip-list'">
-                    <Card v-for="task in taskList[board.name]" :key="task.id" :taskData="task" class="move"></Card>
-                    </transition-group>
-                </draggable> -->
             </div>
             <AddNewTask @addButton="add" :category="board.name"></AddNewTask>
         </div>

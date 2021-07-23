@@ -2,7 +2,9 @@
     <div class="head">
         <!-- Navbar -->
         <Navbar 
-            @changePages="changeView" @logout="logout" :isLogin="isLogin">
+            @changePages="changeView" 
+            @logout="logout" 
+            :isLogin="isLogin">
         </Navbar>
         <!-- End Of Navbar -->
         
@@ -15,7 +17,9 @@
 
         <!-- Register Page -->
         <Register 
-            v-else-if="currentPages === 'register'">
+            v-else-if="currentPages === 'register'"
+            @registerData="register"
+            >
         </Register>
         <!-- End Of Register Page -->
 
@@ -94,6 +98,24 @@ export default {
         changeView(pages){
             this.currentPages = pages
         },
+        register(registerData){
+
+            axios({
+                method: 'POST',
+                url: '/users/register',
+                data: {
+                    "fullname":registerData.fullname,
+                    "email" : registerData.email,
+                    "password" : registerData.password
+                }
+            })
+            .then(()=> {
+                this.currentPages = 'login'
+            })
+            .catch((err) => {
+                console.log(err.response.data);
+            })
+        },
         login(loginData){
             axios({
                 method: 'POST',
@@ -124,6 +146,7 @@ export default {
                 }
             })
             .then(({data}) => {
+                console.log(data);
                 this.tasks = data
             })
             .catch(err => {

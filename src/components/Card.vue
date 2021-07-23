@@ -11,37 +11,12 @@
                             <sui-dropdown-item @click="changeCategory(taskData.id, 'done')">Done</sui-dropdown-item>
                         </sui-dropdown-menu>
                     </sui-dropdown>
-                    <a href="#" @click="deleteTask(taskData.id)"><i class="right floated close icon"></i></a>
+                    <a href="#" @click="deleteTask(taskData.id)"><i class="right floated close icon close"></i></a>
                 </div>
             </div>
-            <div class="content description">                
-                <!-- <TextareaAutosize
-                    class="inputan"
-                    placeholder="Type something here..."
-                    ref="myTextarea"
-                    v-model="taskData.title"
-                    :min-height="35"
-                    :max-height="350"
-                    :style="{width:computedWidth}"
-                    @input="changeWidth"
-                    v-on:update="updateTask(taskData.id, taskData.title)"
-                > -->
-                <!-- <textarea
-                    class="inputan"
-                    placeholder="Type something here..."
-                    ref="myTextarea"
-                    v-model="taskData.title"
-                    :min-height="35"
-                    :max-height="350"
-                    :style="{width:computedWidth}"
-                    @input="changeWidth"
-                    v-on:keyup.enter="updateTask(taskData.id, taskData.title)"
-                ></textarea> -->
+            <div class="content description">
                     <textarea
                         placeholder="Type something here..."
-                        :min-height="40"
-                        rows="2"
-                        :max-height="350"
                         v-model="taskData.title"
                         class="textarea"
                         @input="resize"
@@ -50,7 +25,7 @@
             </div>
             <div class="extra content">
                 <div class="left floated author">
-                    <img class="ui avatar image" src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg"> <span>Arip Budiman</span>
+                    <img class="ui avatar image" src="https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg"> <span>{{taskData.User.fullname}}</span>
                 </div>
             </div>
         </div>          
@@ -141,5 +116,9 @@ export default {
     .nex{
         font-size:9px;
         font-family: 'Montserrat', sans-serif;
+    }
+    .close{
+        color:rgb(213, 191, 191);
+        cursor: pointer;
     }
 </style>

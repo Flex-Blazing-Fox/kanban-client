@@ -1,7 +1,7 @@
 <template>
     <button class="ui bottom green attached button" @click="add(category)">
          <i class="add icon"></i>
-            Add Task ({{category}})
+            Add Task
     </button>
 </template>
 

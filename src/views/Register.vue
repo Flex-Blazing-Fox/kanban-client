@@ -7,28 +7,28 @@
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="user icon"></i>
-                            <input type="text" placeholder="Full Name">
+                            <input type="text" v-model="registerData.fullname" placeholder="Full Name">
                         </div>
                     </div>
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="mail icon"></i>
-                            <input type="text" placeholder="Email">
+                            <input type="text" v-model="registerData.email" placeholder="Email">
                         </div>
                     </div>
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="lock icon"></i>
-                            <input type="text" placeholder="Password">
+                            <input type="password" v-model="registerData.password" placeholder="Password">
                         </div>
                     </div>
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="sync icon"></i>
-                            <input type="text" placeholder="Confirm Password">
+                            <input type="password" v-model="confirmPassword" placeholder="Confirm Password">
                         </div>
                     </div>
-                    <button class="ui button fluid orange big" color="teal" type="submit">Sign Up</button>
+                    <button  @click="register" :disabled="buttonDisabled" class="ui button fluid orange big" color="teal" type="submit">Sign Up</button>
                 </div>
             </div>
         </div>
@@ -42,27 +42,28 @@ export default {
     name:"Register",
     data(){
         return {
-            email:'',
-            password:'',
-            baseUrl: 'http://localhost:3000'
+            registerData:{
+                fullname:'',
+                email:'',
+                password:'',
+            },
+            confirmPassword:'',
+            buttonDisabled:true
         }
+    },
+    watch:{
+       confirmPassword: function(){
+           
+            if(this.registerData.password !== this.confirmPassword){
+                this.buttonDisabled = true
+            } else {
+                this.buttonDisabled = false;
+            }
+        },
     },
     methods:{
         register(){
-            axios({
-                method: 'POST',
-                url: `${this.baseUrl}/users/register`,
-                data: {
-                    "email" : this.email,
-                    "password" : this.password
-                }
-            })
-            .then((result)=> {
-                console.log(result.data);
-            })
-            .catch((err) => {
-                console.log(err.response.data);
-            })
+            this.$emit('registerData', this.registerData)
         }
     }
 }
