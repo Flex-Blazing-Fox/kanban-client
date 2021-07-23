@@ -9,12 +9,16 @@ body {
     background-color: #fa8f15
 }
 
+.container {
+    margin-top: 5px;
+}
+
 i {
     font-style: italic
 }
 
-.container {
-    margin-top: 50px
+.navbar {
+    background-color: #eebf89
 }
 
 .tasks {

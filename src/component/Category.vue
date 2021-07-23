@@ -2,7 +2,7 @@
     <div class="col" style="margin: 10px 2px">
         <div class="card"> <!--col-3-->
             <div class="card-header">
-                <i class="fa fa-tasks"></i>&nbsp;{{category}}
+                <i class="fa fa-tasks"></i>&nbsp;{{category.category}}
             </div> 
         
             <div class="scroll-area-sm">
@@ -14,8 +14,10 @@
                     :edit="edit"
                     :category="category"
                     @editTask="editTask"
+                    @cancelEdit="cancelEdit"
                     @deleteTask="deleteTask"
-                    @submitEdit="submitEdit">
+                    @submitEdit="submitEdit"
+                    @moveTask="moveTask">
                     </Task>
                 </div>
             </div>
@@ -40,6 +42,12 @@ export default {
     methods: {
         editTask(task){
             this.$emit('editTask', task)
+        },
+        cancelEdit(){
+            this.$emit('cancelEdit')
+        },
+        moveTask(indexCategory, task){
+            this.$emit('moveTask', indexCategory, task)
         },
         submitEdit(){
             this.$emit('submitEdit', this.edit)
