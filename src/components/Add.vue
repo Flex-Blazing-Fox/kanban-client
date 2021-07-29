@@ -17,6 +17,9 @@
                             <button class="button is-success">
                                 Add Task
                             </button>
+                            <button @click.prevent="cancel" class="button is-danger">
+                                Cancel
+                            </button>
                         </p>
                     </div>
                 </form>
@@ -60,6 +63,9 @@ export default {
             .finally(()=>{
                 this.formAdd.tittle = ""
             })
+        },
+        cancel(){
+            this.$emit("formAdd", false)
         }
     }
 }

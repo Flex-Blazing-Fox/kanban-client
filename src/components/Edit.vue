@@ -17,7 +17,7 @@
                             <button @submit.prevent="editTask(dataTask.id)" class="button is-success">
                                 Edit Task
                             </button>
-                            <button @submit.prevent="cancel" class="button is-danger">
+                            <button @click.prevent="cancel" class="button is-danger">
                                 Cancel
                             </button>
                         </p>

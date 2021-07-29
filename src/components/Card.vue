@@ -9,7 +9,7 @@
         <a href="#" @click.prevent="formEdit" class="card-footer-item">Edit</a>
         <a href="#" @click.prevent="deleteTask(taskData.id)"  class="card-footer-item">Delete</a>
         <div class="card-footer-item select is-primary">
-            <select @submit.prevent="changeCategory" v-model="category" >
+            <select @submit.prevent="changeCategory" v-model="category">
                 <option v-for="(category, index) in listCategory" :key="index" v-bind:value="category.name">{{category.name}}</option>
             </select>
         </div>
@@ -26,7 +26,7 @@ export default {
     props: ["taskData","listCategory"],
     data() {
         return{
-            category: "",
+            category:this.taskData.category,
             dataTask:this.taskData
         }
     },

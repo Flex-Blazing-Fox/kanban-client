@@ -75,6 +75,7 @@ export default {
             this.formAdd = val
         },
         editTask(val){
+            console.log(val);
             this.formEdit = val
         },
         kirimDataEdit(val){

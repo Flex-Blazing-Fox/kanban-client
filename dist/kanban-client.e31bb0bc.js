@@ -10758,7 +10758,7 @@ var _default = {
   props: ["taskData", "listCategory"],
   data: function data() {
     return {
-      category: "",
+      category: this.taskData.category,
       dataTask: this.taskData
     };
   },
@@ -12018,6 +12018,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
 _axios.default.defaults.baseURL = "http://localhost:3000";
 var _default = {
   name: "AddTask",
@@ -12048,6 +12051,9 @@ var _default = {
       }).finally(function () {
         _this.formAdd.tittle = "";
       });
+    },
+    cancel: function cancel() {
+      this.$emit("formAdd", false);
     }
   }
 };
@@ -12114,7 +12120,33 @@ exports.default = _default;
                 ])
               ]),
               _vm._v(" "),
-              _vm._m(1)
+              _c("div", { staticClass: "field" }, [
+                _c("p", { staticClass: "control" }, [
+                  _c("button", { staticClass: "button is-success" }, [
+                    _vm._v(
+                      "\n                            Add Task\n                        "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "button is-danger",
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.cancel.apply(null, arguments)
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                            Cancel\n                        "
+                      )
+                    ]
+                  )
+                ])
+              ])
             ]
           )
         ])
@@ -12135,20 +12167,6 @@ var staticRenderFns = [
       },
       [_c("h1", [_vm._v("Add New Task")])]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "field" }, [
-      _c("p", { staticClass: "control" }, [
-        _c("button", { staticClass: "button is-success" }, [
-          _vm._v(
-            "\n                            Add Task\n                        "
-          )
-        ])
-      ])
-    ])
   }
 ]
 render._withStripped = true
@@ -12343,7 +12361,7 @@ exports.default = _default;
                   {
                     staticClass: "button is-danger",
                     on: {
-                      submit: function($event) {
+                      click: function($event) {
                         $event.preventDefault()
                         return _vm.cancel.apply(null, arguments)
                       }
@@ -12505,6 +12523,7 @@ var _default = {
       this.formAdd = val;
     },
     editTask: function editTask(val) {
+      console.log(val);
       this.formEdit = val;
     },
     kirimDataEdit: function kirimDataEdit(val) {
@@ -12644,7 +12663,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52764" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51176" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
