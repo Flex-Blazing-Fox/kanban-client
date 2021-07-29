@@ -4,13 +4,13 @@
         <nav class="navbar navbar-expand-xl">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <button type="button" class="btn btn-primary">Home</button>
+                    <button @click="home" type="button" class="btn btn-primary">Home</button>
                 </li>
                 <li class="nav-item">
-                    <button type="button" class="btn btn-primary">Add</button>
+                    <button @click="addForm" type="button" class="btn btn-primary">Add</button>
                 </li>
                 <li class="nav-item">
-                    <button type="button" class="btn btn-primary">Logout</button>
+                    <button @click="logout" type="button" class="btn btn-primary">Logout</button>
                 </li>
             </ul>
         </nav>
@@ -20,7 +20,20 @@
 
 <script>
 export default {
-
+    name:"Navbar",
+    methods:{
+        logout(){
+            localStorage.clear(),
+            this.$emit("isLogin",false)
+        },
+        addForm(){
+            this.$emit("addForm",false)
+        },
+        home(){
+            this.$emit("home",true)
+            this.$emit("home2",true)
+        }
+    }
 }
 </script>
 

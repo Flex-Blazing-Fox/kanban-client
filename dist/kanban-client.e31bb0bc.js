@@ -10811,6 +10811,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
 _axios.default.defaults.baseURL = "http://localhost:3000";
 var _default = {
   data: function data() {
@@ -10819,7 +10823,7 @@ var _default = {
         Email: '',
         Password: ''
       },
-      message: '',
+      message: [],
       changeForm: true
     };
   },
@@ -10836,9 +10840,9 @@ var _default = {
         data: this.formLogin
       }).then(function (_ref) {
         var data = _ref.data;
-        console.log(data), _this.message = data.message;
-      }).catch(function (err) {
-        return [console.log(err), _this.message = err];
+        _this.message = data.message;
+      }).catch(function (error) {
+        return [_this.message = error.response.data.err];
       });
     },
     login: function login() {
@@ -10858,8 +10862,8 @@ var _default = {
         _this2.$emit("changePage", true);
 
         _this2.message = data.message;
-      }).catch(function (err) {
-        return [console.log(err), _this2.message = err];
+      }).catch(function (error) {
+        return [_this2.message = error.response.data.err];
       });
     }
   }
@@ -10880,7 +10884,33 @@ exports.default = _default;
   return _c("div", [
     _vm.changeForm === true
       ? _c("div", { staticClass: "container", attrs: { id: "login" } }, [
-          _c("div", { staticClass: "alert alert-warning text-center my-4" }),
+          _c("div", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.message.length === 0,
+                expression: "message.length ===0"
+              }
+            ],
+            staticClass: "alert my-4"
+          }),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.message.length != 0,
+                  expression: "message.length !=0"
+                }
+              ],
+              staticClass: "alert alert-warning text-center my-4"
+            },
+            [_vm._v(_vm._s(_vm.message))]
+          ),
           _vm._v(" "),
           _c("div", { staticClass: "row justify-content-center" }, [
             _c("div", { staticClass: "col-12 col-md-8 col-lg-8 col-xl-6" }, [
@@ -10989,9 +11019,33 @@ exports.default = _default;
         ])
       : _vm.changeForm === false
       ? _c("div", { staticClass: "container", attrs: { id: "register" } }, [
-          _c("div", { staticClass: "alert alert-warning text-center my-4" }, [
-            _vm._v(_vm._s(_vm.message))
-          ]),
+          _c("div", {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.message.length === 0,
+                expression: "message.length ===0"
+              }
+            ],
+            staticClass: "alert my-4"
+          }),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.message.length != 0,
+                  expression: "message.length !=0"
+                }
+              ],
+              staticClass: "alert alert-warning text-center my-4"
+            },
+            [_vm._v(_vm._s(_vm.message))]
+          ),
           _vm._v(" "),
           _c("div", { staticClass: "row justify-content-center" }, [
             _c("div", { staticClass: "col-12 col-md-8 col-lg-8 col-xl-6" }, [
@@ -11135,7 +11189,7 @@ render._withStripped = true
       
       }
     })();
-},{"axios":"node_modules/axios/index.js","_css_loader":"C:/Users/acer/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/navbar/navbar.vue":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js","_css_loader":"C:/Users/acer/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/navbar/Navbar.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11162,58 +11216,77 @@ exports.default = void 0;
 //
 //
 //
-var _default = {};
+var _default = {
+  name: "Navbar",
+  methods: {
+    logout: function logout() {
+      localStorage.clear(), this.$emit("isLogin", false);
+    },
+    addForm: function addForm() {
+      this.$emit("addForm", false);
+    },
+    home: function home() {
+      this.$emit("home", true);
+      this.$emit("home2", true);
+    }
+  }
+};
 exports.default = _default;
-        var $06b750 = exports.default || module.exports;
+        var $91f200 = exports.default || module.exports;
       
-      if (typeof $06b750 === 'function') {
-        $06b750 = $06b750.options;
+      if (typeof $91f200 === 'function') {
+        $91f200 = $91f200.options;
       }
     
         /* template */
-        Object.assign($06b750, (function () {
+        Object.assign($91f200, (function () {
           var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { attrs: { id: "navbar" } }, [
-      _c("nav", { staticClass: "navbar navbar-expand-xl" }, [
-        _c("ul", { staticClass: "navbar-nav" }, [
-          _c("li", { staticClass: "nav-item" }, [
-            _c(
-              "button",
-              { staticClass: "btn btn-primary", attrs: { type: "button" } },
-              [_vm._v("Home")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "nav-item" }, [
-            _c(
-              "button",
-              { staticClass: "btn btn-primary", attrs: { type: "button" } },
-              [_vm._v("Add")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "nav-item" }, [
-            _c(
-              "button",
-              { staticClass: "btn btn-primary", attrs: { type: "button" } },
-              [_vm._v("Logout")]
-            )
-          ])
+  return _c("div", { attrs: { id: "navbar" } }, [
+    _c("nav", { staticClass: "navbar navbar-expand-xl" }, [
+      _c("ul", { staticClass: "navbar-nav" }, [
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary",
+              attrs: { type: "button" },
+              on: { click: _vm.home }
+            },
+            [_vm._v("Home")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary",
+              attrs: { type: "button" },
+              on: { click: _vm.addForm }
+            },
+            [_vm._v("Add")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary",
+              attrs: { type: "button" },
+              on: { click: _vm.logout }
+            },
+            [_vm._v("Logout")]
+          )
         ])
       ])
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
           return {
@@ -11233,9 +11306,9 @@ render._withStripped = true
         if (api.compatible) {
           module.hot.accept();
           if (!module.hot.data) {
-            api.createRecord('$06b750', $06b750);
+            api.createRecord('$91f200', $91f200);
           } else {
-            api.reload('$06b750', $06b750);
+            api.reload('$91f200', $91f200);
           }
         }
 
@@ -11246,7 +11319,7 @@ render._withStripped = true
       
       }
     })();
-},{"_css_loader":"C:/Users/acer/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/footer/footer.vue":[function(require,module,exports) {
+},{"_css_loader":"C:/Users/acer/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/footer/Footer.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11263,14 +11336,14 @@ exports.default = void 0;
 //
 var _default = {};
 exports.default = _default;
-        var $04dc33 = exports.default || module.exports;
+        var $7a29e1 = exports.default || module.exports;
       
-      if (typeof $04dc33 === 'function') {
-        $04dc33 = $04dc33.options;
+      if (typeof $7a29e1 === 'function') {
+        $7a29e1 = $7a29e1.options;
       }
     
         /* template */
-        Object.assign($04dc33, (function () {
+        Object.assign($7a29e1, (function () {
           var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -11306,9 +11379,9 @@ render._withStripped = true
         if (api.compatible) {
           module.hot.accept();
           if (!module.hot.data) {
-            api.createRecord('$04dc33', $04dc33);
+            api.createRecord('$7a29e1', $7a29e1);
           } else {
-            api.reload('$04dc33', $04dc33);
+            api.reload('$7a29e1', $7a29e1);
           }
         }
 
@@ -11319,13 +11392,18 @@ render._withStripped = true
       
       }
     })();
-},{"_css_loader":"C:/Users/acer/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/board/board.vue":[function(require,module,exports) {
+},{"_css_loader":"C:/Users/acer/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/Card.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 //
 //
 //
@@ -11338,121 +11416,493 @@ exports.default = void 0;
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default = {};
+_axios.default.defaults.baseURL = "http://localhost:3000";
+var _default = {
+  name: "Card",
+  props: ["taskTitle", "editKategori", "fetch"],
+  methods: {
+    editTask: function editTask(value) {
+      this.$emit("editValue", value);
+      this.$emit("editTask", false);
+    },
+    deleteTask: function deleteTask(id) {
+      var _this = this;
+
+      (0, _axios.default)({
+        method: "DELETE",
+        url: "/tasks/" + id,
+        headers: {
+          access_token: localStorage.access_token
+        }
+      }).then(function () {
+        _this.$emit("deleteTask");
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    kategoriEditNext: function kategoriEditNext(id, kategori) {
+      var _this2 = this;
+
+      var tmp = "";
+
+      for (var index = 0; index < this.editKategori.length; index++) {
+        if (kategori === this.editKategori[index]) {
+          tmp = index;
+        }
+      }
+
+      if (tmp >= 0 && tmp < 3) {
+        tmp++;
+      }
+
+      (0, _axios.default)({
+        method: "PATCH",
+        url: "/tasks/" + id,
+        headers: {
+          access_token: localStorage.access_token
+        },
+        data: {
+          Category: this.editKategori[tmp]
+        }
+      }).then(function () {
+        tmp = "";
+
+        _this2.$emit("fetchData");
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    kategoriEditBack: function kategoriEditBack(id, kategori) {
+      var _this3 = this;
+
+      var tmp = "";
+
+      for (var index = 0; index < this.editKategori.length; index++) {
+        if (kategori === this.editKategori[index]) {
+          tmp = index;
+        }
+      }
+
+      if (tmp != 3 && tmp != 0) {
+        tmp--;
+      }
+
+      (0, _axios.default)({
+        method: "PATCH",
+        url: "/tasks/" + id,
+        headers: {
+          access_token: localStorage.access_token
+        },
+        data: {
+          Category: this.editKategori[tmp]
+        }
+      }).then(function () {
+        tmp = "";
+
+        _this3.$emit("fetchData");
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+  }
+};
 exports.default = _default;
-        var $19a9cf = exports.default || module.exports;
+        var $6285c3 = exports.default || module.exports;
       
-      if (typeof $19a9cf === 'function') {
-        $19a9cf = $19a9cf.options;
+      if (typeof $6285c3 === 'function') {
+        $6285c3 = $6285c3.options;
       }
     
         /* template */
-        Object.assign($19a9cf, (function () {
+        Object.assign($6285c3, (function () {
           var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "boards-container__board__card" }, [
+    _c("p", [_vm._v(_vm._s(_vm.taskTitle.title) + " ")]),
+    _c("span", { staticStyle: { color: "grey" } }, [
+      _vm._v(_vm._s(_vm.taskTitle.userID))
+    ]),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        on: {
+          click: function($event) {
+            return _vm.deleteTask(_vm.taskTitle.id)
+          }
+        }
+      },
+      [_vm._v("\n    Delete "), _c("i", { staticClass: "fas fa-archive" })]
+    ),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        on: {
+          click: function($event) {
+            return _vm.editTask(_vm.taskTitle)
+          }
+        }
+      },
+      [_vm._v("Edit "), _c("i", { staticClass: "fas fa-edit" })]
+    ),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        on: {
+          click: function($event) {
+            $event.preventDefault()
+            return _vm.kategoriEditBack(
+              _vm.taskTitle.id,
+              _vm.taskTitle.Category
+            )
+          }
+        }
+      },
+      [_c("i", { staticClass: "fas fa-angle-double-left" })]
+    ),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        on: {
+          click: function($event) {
+            $event.preventDefault()
+            return _vm.kategoriEditNext(
+              _vm.taskTitle.id,
+              _vm.taskTitle.Category
+            )
+          }
+        }
+      },
+      [_c("i", { staticClass: "fas fa-angle-double-right" })]
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$6285c3', $6285c3);
+          } else {
+            api.reload('$6285c3', $6285c3);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"axios":"node_modules/axios/index.js","_css_loader":"C:/Users/acer/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/board/Board.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _Card = _interopRequireDefault(require("../Card.vue"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = {
+  name: "Board",
+  components: {
+    Card: _Card.default
+  },
+  props: ["kategori", "tasks", "editKategori"],
+  methods: {
+    editValue: function editValue(value) {
+      this.$emit("editValue", value);
+    },
+    editTask: function editTask(value) {
+      this.$emit("editTask", value);
+    },
+    deleteTask: function deleteTask() {
+      this.$emit("deleteTask");
+    },
+    fetchData: function fetchData() {
+      console.log("dari fetch data");
+      this.$emit("fetchData");
+    }
+  }
+};
+exports.default = _default;
+        var $697bcb = exports.default || module.exports;
+      
+      if (typeof $697bcb === 'function') {
+        $697bcb = $697bcb.options;
+      }
+    
+        /* template */
+        Object.assign($697bcb, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      { staticClass: "boards-container__board" },
+      [
+        _c("h1", [_vm._v(_vm._s(_vm.kategori))]),
+        _vm._v(" "),
+        _vm._l(_vm.tasks[_vm.kategori], function(task) {
+          return _c("Card", {
+            key: task.id,
+            attrs: { taskTitle: task, editKategori: _vm.editKategori },
+            on: {
+              deleteTask: _vm.deleteTask,
+              editValue: _vm.editValue,
+              editTask: _vm.editTask,
+              fetchData: _vm.fetchData
+            }
+          })
+        })
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$697bcb', $697bcb);
+          } else {
+            api.reload('$697bcb', $697bcb);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"../Card.vue":"src/components/Card.vue","_css_loader":"C:/Users/acer/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/AddTask.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+_axios.default.defaults.baseURL = "http://localhost:3000";
+var _default = {
+  name: "AddTask",
+  data: function data() {
+    return {
+      formAdd: {
+        title: ""
+      },
+      message: ""
+    };
+  },
+  methods: {
+    addForm: function addForm() {
+      this.$emit("addForm", true);
+    },
+    addTask: function addTask() {
+      var _this = this;
+
+      (0, _axios.default)({
+        method: "POST",
+        url: "/tasks",
+        headers: {
+          "Content-Type": "application/json",
+          access_token: localStorage.access_token
+        },
+        data: {
+          title: this.formAdd.title
+        }
+      }).then(function (_ref) {
+        var data = _ref.data;
+        _this.message = data.message;
+      }).catch(function () {
+        _this.message = "Title must not empty";
+      }).finally(function () {
+        _this.formAdd.title = "";
+      });
+    }
+  }
+};
+exports.default = _default;
+        var $10e630 = exports.default || module.exports;
+      
+      if (typeof $10e630 === 'function') {
+        $10e630 = $10e630.options;
+      }
+    
+        /* template */
+        Object.assign($10e630, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container", attrs: { id: "register" } }, [
+    !_vm.message ? _c("div", { staticClass: "alert my-4" }) : _vm._e(),
+    _vm._v(" "),
+    _vm.message
+      ? _c("div", { staticClass: "alert alert-warning text-center my-4" }, [
+          _vm._v(_vm._s(_vm.message))
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-12 col-md-8 col-lg-8 col-xl-6" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "row align-items-center mt-4" }, [
+          _c("div", { staticClass: "col" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.formAdd.title,
+                  expression: "formAdd.title"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { placeholder: "Input title task" },
+              domProps: { value: _vm.formAdd.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.formAdd, "title", $event.target.value)
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row justify-content-start" }, [
+          _c("div", { staticClass: "col" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary mt-4",
+                on: { click: _vm.addTask }
+              },
+              [_vm._v("Submit")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary mt-4",
+                on: { click: _vm.addForm }
+              },
+              [_vm._v("Back")]
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "boards-container" }, [
-      _c("div", { staticClass: "boards-container__board" }, [
-        _c("h1", [_vm._v("Back Log")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "boards-container__board__card" }, [
-          _vm._v("Card #1\n         "),
-          _c("button", [
-            _vm._v("Delete "),
-            _c("i", { staticClass: "fas fa-archive" })
-          ]),
-          _vm._v(" "),
-          _c("button", [
-            _vm._v("Edit "),
-            _c("i", { staticClass: "fas fa-edit" })
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "boards-container__board" }, [
-        _c("h1", [_vm._v("Todo")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "boards-container__board__card" }, [
-          _vm._v("Card #1\n         "),
-          _c("button", [
-            _vm._v("Delete "),
-            _c("i", { staticClass: "fas fa-archive" })
-          ]),
-          _vm._v(" "),
-          _c("button", [
-            _vm._v("Edit "),
-            _c("i", { staticClass: "fas fa-edit" })
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "boards-container__board" }, [
-        _c("h1", [_vm._v("Doing")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "boards-container__board__card" }, [
-          _vm._v("Card #1\n         "),
-          _c("button", [
-            _vm._v("Delete "),
-            _c("i", { staticClass: "fas fa-archive" })
-          ]),
-          _vm._v(" "),
-          _c("button", [
-            _vm._v("Edit "),
-            _c("i", { staticClass: "fas fa-edit" })
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "boards-container__board" }, [
-        _c("h1", [_vm._v("Done")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "boards-container__board__card" }, [
-          _vm._v("Card #1\n         "),
-          _c("button", [
-            _vm._v("Delete "),
-            _c("i", { staticClass: "fas fa-archive" })
-          ]),
-          _vm._v(" "),
-          _c("button", [
-            _vm._v("Edit "),
-            _c("i", { staticClass: "fas fa-edit" })
-          ])
-        ])
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col text-center" }, [
+        _c("h2", [_vm._v("Add Task")])
       ])
     ])
   }
@@ -11476,9 +11926,9 @@ render._withStripped = true
         if (api.compatible) {
           module.hot.accept();
           if (!module.hot.data) {
-            api.createRecord('$19a9cf', $19a9cf);
+            api.createRecord('$10e630', $10e630);
           } else {
-            api.reload('$19a9cf', $19a9cf);
+            api.reload('$10e630', $10e630);
           }
         }
 
@@ -11489,7 +11939,7 @@ render._withStripped = true
       
       }
     })();
-},{"_css_loader":"C:/Users/acer/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/Home.vue":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js","_css_loader":"C:/Users/acer/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/EditTask.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11497,11 +11947,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _navbar = _interopRequireDefault(require("./components/navbar/navbar.vue"));
-
-var _footer = _interopRequireDefault(require("./components/footer/footer.vue"));
-
-var _board = _interopRequireDefault(require("./components/board/board.vue"));
+var _axios = _interopRequireDefault(require("axios"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11513,12 +11959,314 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+_axios.default.defaults.baseURL = "http://localhost:3000";
 var _default = {
-  name: 'Home',
+  name: "EditTask",
+  props: ["editValue"],
+  data: function data() {
+    return {
+      formEdit: {
+        title: this.editValue.title
+      },
+      message: ""
+    };
+  },
+  methods: {
+    editForm: function editForm() {
+      this.$emit("editForm", true);
+    },
+    editTask: function editTask(id) {
+      var _this = this;
+
+      (0, _axios.default)({
+        method: "PUT",
+        url: "/tasks/" + id,
+        headers: {
+          "Content-Type": "application/json",
+          access_token: localStorage.access_token
+        },
+        data: {
+          title: this.formEdit.title,
+          Category: this.editValue.Category
+        }
+      }).then(function (_ref) {
+        var data = _ref.data;
+        _this.message = data.message;
+      }).catch(function (error) {
+        if (error.response.data.err === "Task not found") {
+          _this.message = "Unauthorized";
+        } else {
+          _this.message = "Title must not empty";
+        }
+      });
+    }
+  }
+};
+exports.default = _default;
+        var $ccc2cb = exports.default || module.exports;
+      
+      if (typeof $ccc2cb === 'function') {
+        $ccc2cb = $ccc2cb.options;
+      }
+    
+        /* template */
+        Object.assign($ccc2cb, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container", attrs: { id: "register" } }, [
+    !_vm.message ? _c("div", { staticClass: "alert my-4" }) : _vm._e(),
+    _vm._v(" "),
+    _vm.message
+      ? _c("div", { staticClass: "alert alert-warning text-center my-4" }, [
+          _vm._v(_vm._s(_vm.message))
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-12 col-md-8 col-lg-8 col-xl-6" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "row align-items-center mt-4" }, [
+          _c("div", { staticClass: "col" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.formEdit.title,
+                  expression: "formEdit.title"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { placeholder: "Input title task" },
+              domProps: { value: _vm.formEdit.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.formEdit, "title", $event.target.value)
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row justify-content-start" }, [
+          _c("div", { staticClass: "col" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary mt-4",
+                on: {
+                  click: function($event) {
+                    return _vm.editTask(_vm.editValue.id)
+                  }
+                }
+              },
+              [_vm._v("Submit")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary mt-4",
+                on: { click: _vm.editForm }
+              },
+              [_vm._v("Back")]
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col text-center" }, [
+        _c("h2", [_vm._v("Edit Task")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$ccc2cb', $ccc2cb);
+          } else {
+            api.reload('$ccc2cb', $ccc2cb);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"axios":"node_modules/axios/index.js","_css_loader":"C:/Users/acer/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/Home.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _Navbar = _interopRequireDefault(require("./components/navbar/Navbar"));
+
+var _Footer = _interopRequireDefault(require("./components/footer/Footer"));
+
+var _Board = _interopRequireDefault(require("./components/board/Board"));
+
+var _AddTask = _interopRequireDefault(require("./components/AddTask.vue"));
+
+var _EditTask = _interopRequireDefault(require("./components/EditTask.vue"));
+
+var _axios = _interopRequireDefault(require("axios"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+_axios.default.defaults.baseURL = "http://localhost:3000";
+var _default = {
+  name: "Home",
   components: {
-    Navbar: _navbar.default,
-    Footer: _footer.default,
-    Board: _board.default
+    Navbar: _Navbar.default,
+    Footer: _Footer.default,
+    Board: _Board.default,
+    AddTask: _AddTask.default,
+    EditTask: _EditTask.default
+  },
+  data: function data() {
+    return {
+      Category: ["Back Log", "Todo", "Doing", "Done"],
+      taskList: [],
+      changePages: true,
+      changePagesEdit: true,
+      editData: ""
+    };
+  },
+  computed: {
+    filterTask: function filterTask() {
+      var object = [];
+      this.taskList.forEach(function (el) {
+        if (object[el.Category] === undefined) {
+          object[el.Category] = [];
+        }
+
+        object[el.Category].push(el);
+      });
+      return object;
+    }
+  },
+  methods: {
+    logout: function logout(value) {
+      this.$emit("isLogout", value);
+    },
+    editTask: function editTask(value) {
+      this.changePagesEdit = value;
+      this.fetchData();
+    },
+    addForm: function addForm(value) {
+      this.changePages = value;
+      this.fetchData();
+    },
+    editValue: function editValue(value) {
+      this.editData = value;
+    },
+    deleteTask: function deleteTask() {
+      this.fetchData();
+    },
+    fetchData: function fetchData() {
+      var _this = this;
+
+      (0, _axios.default)({
+        method: "GET",
+        url: "/tasks",
+        headers: {
+          access_token: localStorage.access_token
+        }
+      }).then(function (_ref) {
+        var data = _ref.data;
+        _this.taskList = data.Task;
+      }).catch(function (err) {});
+    }
+  },
+  created: function created() {
+    this.fetchData();
   }
 };
 exports.default = _default;
@@ -11536,7 +12284,51 @@ exports.default = _default;
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    [_c("Navbar"), _vm._v(" "), _c("Board"), _vm._v(" "), _c("Footer")],
+    [
+      _c("Navbar", {
+        on: {
+          isLogin: _vm.logout,
+          addForm: _vm.addForm,
+          home: _vm.addForm,
+          home2: _vm.editTask
+        }
+      }),
+      _vm._v(" "),
+      _vm.changePages && _vm.changePagesEdit
+        ? _c(
+            "div",
+            { staticClass: "boards-container" },
+            _vm._l(_vm.Category, function(kategori, index) {
+              return _c("Board", {
+                key: index,
+                attrs: {
+                  kategori: kategori,
+                  tasks: _vm.filterTask,
+                  editKategori: _vm.Category
+                },
+                on: {
+                  editTask: _vm.editTask,
+                  deleteTask: _vm.deleteTask,
+                  editValue: _vm.editValue,
+                  fetchData: _vm.fetchData
+                }
+              })
+            }),
+            1
+          )
+        : !_vm.changePages
+        ? _c("AddTask", { on: { addForm: _vm.addForm } })
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.changePagesEdit
+        ? _c("EditTask", {
+            attrs: { editValue: _vm.editData },
+            on: { editForm: _vm.editTask }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _c("Footer")
+    ],
     1
   )
 }
@@ -11573,7 +12365,7 @@ render._withStripped = true
       
       }
     })();
-},{"./components/navbar/navbar.vue":"src/components/navbar/navbar.vue","./components/footer/footer.vue":"src/components/footer/footer.vue","./components/board/board.vue":"src/components/board/board.vue","_css_loader":"C:/Users/acer/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
+},{"./components/navbar/Navbar":"src/components/navbar/Navbar.vue","./components/footer/Footer":"src/components/footer/Footer.vue","./components/board/Board":"src/components/board/Board.vue","./components/AddTask.vue":"src/components/AddTask.vue","./components/EditTask.vue":"src/components/EditTask.vue","axios":"node_modules/axios/index.js","_css_loader":"C:/Users/acer/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11606,8 +12398,8 @@ var _default = {
     };
   },
   methods: {
-    changePage: function changePage() {
-      this.isLogin = true;
+    changePage: function changePage(value) {
+      this.isLogin = value;
     },
     cekLogin: function cekLogin() {
       var acces_token = localStorage.getItem("access_token");
@@ -11641,7 +12433,7 @@ exports.default = _default;
     [
       _vm.isLogin === false
         ? _c("home-page", { on: { changePage: _vm.changePage } })
-        : _c("home")
+        : _c("home", { on: { isLogout: _vm.changePage } })
     ],
     1
   )
@@ -11721,7 +12513,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60494" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56753" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

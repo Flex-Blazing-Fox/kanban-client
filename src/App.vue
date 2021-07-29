@@ -1,7 +1,7 @@
 <template>
 <div>
   <home-page v-if="isLogin===false" @changePage = "changePage"></home-page>
-  <home v-else></home>
+  <home v-else @isLogout="changePage"></home>
 </div>
 </template>
 
@@ -11,15 +11,14 @@ import Home from './Home.vue'
 export default {
     name:"App",
     components:{HomePage,Home},
-
     data(){
       return {
         isLogin : false
       }
     },
   methods:{
-    changePage(){
-      this.isLogin = true
+    changePage(value){
+      this.isLogin = value
     },
     cekLogin(){
       let acces_token = localStorage.getItem("access_token")

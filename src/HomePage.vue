@@ -1,7 +1,9 @@
 <template>
   <div>
     <div v-if="changeForm === true" id="login" class="container">
-      <div class="alert alert-warning text-center my-4"></div>
+      <div  v-show="message.length ===0" class="alert my-4">
+      </div>
+        <div v-show="message.length !=0" class="alert alert-warning text-center my-4">{{message}}</div>
 
       <div class="row justify-content-center">
         <div class="col-12 col-md-8 col-lg-8 col-xl-6">
@@ -40,7 +42,9 @@
     </div>
 
     <div v-else-if="changeForm === false" id="register" class="container">
-      <div class="alert alert-warning text-center my-4">{{message}}</div>
+      <div  v-show="message.length ===0" class="alert my-4">
+      </div>
+        <div v-show="message.length !=0" class="alert alert-warning text-center my-4">{{message}}</div>
       <div class="row justify-content-center">
         <div class="col-12 col-md-8 col-lg-8 col-xl-6">
           <div class="row">
@@ -87,7 +91,7 @@ export default {
             Email:'',
             Password:''
         },
-        message:'',
+        message:[],
         changeForm: true
      }
   },
@@ -100,16 +104,15 @@ export default {
           data:this.formLogin
         })
         .then(({data})=>{
-          console.log(data),
           this.message = data.message
         })
-        .catch((err)=>[
-          console.log(err),
-          this.message = err
+        .catch((error)=>[
+          this.message = error.response.data.err
+
         ])
       },
       login(){
-         Axios({
+        Axios({
           method: "POST",
           url: "/login",
           headers: { "Content-Type": "application/json" },
@@ -120,9 +123,8 @@ export default {
           this.$emit("changePage",true)
           this.message = data.message
         })
-        .catch((err)=>[
-          console.log(err),
-          this.message = err
+        .catch((error)=>[
+          this.message = error.response.data.err
         ])
       }
   }
