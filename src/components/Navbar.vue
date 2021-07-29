@@ -8,11 +8,14 @@
             </button>
             <div class="collapse navbar-collapse navbar-nav" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li v-if="login" class="nav-item active">
-                    <a class="nav-link" href="#" @click.prevent="addTask" id="nav-add">Add Task</a>
+                    <li class="nav-item active">
+                    <a v-if="isLogin2 === true" class="nav-link" href="#" @click="addTask" id="nav-add">Add Task</a>
+                    </li>
+                    <li class="nav-item active">
+                    <a v-if="isLogin2 === true" class="nav-link" href="#" @click="board" id="nav-add">Board</a>
                     </li>
                 </ul>
-                <a v-if="login" class="nav-link active" href="#" @click.prevent="logout" id="nav-logout">Logout</a>
+                <a v-if="isLogin2 === true" class="nav-link active" href="#" @click="logout" id="nav-logout">Logout</a>
             </div>
         </nav>
     </div>
@@ -22,14 +25,21 @@
 <script>
 export default {
     name: "navbar",
-    props: ['login'],
+    props: ['isLogin2'],
     methods: {
+        logout() {
+            localStorage.clear()
+            this.$emit("isLogin", false)
+
+        },
         addTask(){
-            this.$emit('addTask')
+            this.$emit("formAdd", true)
         },
-        logout(){
-            this.$emit('logout')
-        },
+        board(){
+            this.$emit("formAdd", false)
+            this.$emit("formEdit", false)
+        }
+        
     }
 }
 </script>
