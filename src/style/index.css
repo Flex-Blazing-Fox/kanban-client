@@ -1,0 +1,42 @@
+#nav-login {
+    color: whitesmoke;
+}
+
+#nav-home {
+    color: whitesmoke;
+}
+
+#nav-add {
+    color: whitesmoke;
+}
+
+#nav-logout {
+    color: whitesmoke;
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    margin-right: 50%;
+}
+
+.border-line {
+    border-right: 1px solid #EEEEEE
+}
+   
+.line {
+    height: 1px;
+    width: 45%;
+    background-color: #E0E0E0;
+    margin-top: 10px
+}
+
+.foter {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color:coral;
+    color: whitesmoke;
+    text-align: center;
+}
